@@ -1,0 +1,676 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8906A27B1BB8F66800828A5F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8906A27A1BB8F66800828A5F /* AppDelegate.swift */; };
+		8906A27D1BB8F66800828A5F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8906A27C1BB8F66800828A5F /* ViewController.swift */; };
+		8906A2801BB8F66800828A5F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8906A27E1BB8F66800828A5F /* Main.storyboard */; };
+		8906A2821BB8F66800828A5F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8906A2811BB8F66800828A5F /* Assets.xcassets */; };
+		8906A2851BB8F66800828A5F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8906A2831BB8F66800828A5F /* LaunchScreen.storyboard */; };
+		8906A2901BB8F66800828A5F /* FindMeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8906A28F1BB8F66800828A5F /* FindMeTests.swift */; };
+		8906A29B1BB8F66800828A5F /* FindMeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8906A29A1BB8F66800828A5F /* FindMeUITests.swift */; };
+		8906A2A91BB8F6B700828A5F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2A81BB8F6B700828A5F /* AudioToolbox.framework */; };
+		8906A2AB1BB8F6BD00828A5F /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2AA1BB8F6BD00828A5F /* CFNetwork.framework */; };
+		8906A2AD1BB8F6C500828A5F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2AC1BB8F6C500828A5F /* CoreGraphics.framework */; };
+		8906A2AF1BB8F6CD00828A5F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2AE1BB8F6CD00828A5F /* CoreLocation.framework */; };
+		8906A2B11BB8F6D400828A5F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2B01BB8F6D400828A5F /* QuartzCore.framework */; };
+		8906A2B31BB8F6DB00828A5F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2B21BB8F6DB00828A5F /* Security.framework */; };
+		8906A2B51BB8F6E000828A5F /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2B41BB8F6E000828A5F /* StoreKit.framework */; };
+		8906A2B71BB8F6E600828A5F /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2B61BB8F6E600828A5F /* SystemConfiguration.framework */; };
+		8906A2BF1BB8F7DF00828A5F /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2BD1BB8F7DF00828A5F /* libsqlite3.dylib */; };
+		8906A2C01BB8F7DF00828A5F /* libz.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2BE1BB8F7DF00828A5F /* libz.1.dylib */; };
+		8906A2C21BB8F81800828A5F /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2C11BB8F81800828A5F /* Parse.framework */; settings = {ASSET_TAGS = (); }; };
+		8906A2C61BB9058600828A5F /* ParseFacebookUtilsV4.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2C51BB9058600828A5F /* ParseFacebookUtilsV4.framework */; settings = {ASSET_TAGS = (); }; };
+		8906A2CA1BB9063E00828A5F /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2C91BB9063E00828A5F /* FBSDKCoreKit.framework */; settings = {ASSET_TAGS = (); }; };
+		8906A2CC1BB9066E00828A5F /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2CB1BB9066E00828A5F /* FBSDKLoginKit.framework */; settings = {ASSET_TAGS = (); }; };
+		8906A2D01BB9084300828A5F /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2CF1BB9084300828A5F /* Bolts.framework */; settings = {ASSET_TAGS = (); }; };
+		8906A2D21BB9440400828A5F /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2D11BB9440400828A5F /* GoogleMaps.framework */; settings = {ASSET_TAGS = (); }; };
+		8906A2D41BB944EF00828A5F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8906A2D31BB944EF00828A5F /* HomeViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		8906A2D61BB9457D00828A5F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2D51BB9457D00828A5F /* CoreData.framework */; };
+		8906A2D81BB9458300828A5F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2D71BB9458300828A5F /* AVFoundation.framework */; };
+		8906A2DA1BB9458800828A5F /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2D91BB9458800828A5F /* CoreText.framework */; };
+		8906A2DC1BB9458E00828A5F /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2DB1BB9458E00828A5F /* GLKit.framework */; };
+		8906A2DE1BB9459400828A5F /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2DD1BB9459400828A5F /* ImageIO.framework */; };
+		8906A2E01BB9459B00828A5F /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2DF1BB9459B00828A5F /* OpenGLES.framework */; };
+		8906A2E21BB9463300828A5F /* libicucore.A.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2E11BB9463300828A5F /* libicucore.A.dylib */; };
+		8906A2E41BB9464600828A5F /* libc++.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2E31BB9464600828A5F /* libc++.1.dylib */; };
+		8906A2E61BB9465700828A5F /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2E51BB9465700828A5F /* CoreBluetooth.framework */; };
+		8906A2E81BB9465B00828A5F /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2E71BB9465B00828A5F /* Accelerate.framework */; };
+		8906A2EA1BB948AE00828A5F /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8906A2E91BB948AE00828A5F /* GoogleMaps.bundle */; settings = {ASSET_TAGS = (); }; };
+		890701B71BBA42E6004FE503 /* MapTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890701B61BBA42E6004FE503 /* MapTasks.swift */; settings = {ASSET_TAGS = (); }; };
+		895E78171BBB8F3F006E50C8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 895E78161BBB8F3F006E50C8 /* Constants.swift */; settings = {ASSET_TAGS = (); }; };
+		895E781A1BBC17B7006E50C8 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 895E78181BBC17B7006E50C8 /* Alamofire.framework */; settings = {ASSET_TAGS = (); }; };
+		895E781B1BBC17B7006E50C8 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 895E78191BBC17B7006E50C8 /* SwiftyJSON.framework */; settings = {ASSET_TAGS = (); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8906A28C1BB8F66800828A5F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8906A26F1BB8F66800828A5F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8906A2761BB8F66800828A5F;
+			remoteInfo = FindMe;
+		};
+		8906A2971BB8F66800828A5F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8906A26F1BB8F66800828A5F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8906A2761BB8F66800828A5F;
+			remoteInfo = FindMe;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		8906A2771BB8F66800828A5F /* FindMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FindMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8906A27A1BB8F66800828A5F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		8906A27C1BB8F66800828A5F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		8906A27F1BB8F66800828A5F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		8906A2811BB8F66800828A5F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8906A2841BB8F66800828A5F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8906A2861BB8F66800828A5F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8906A28B1BB8F66800828A5F /* FindMeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FindMeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8906A28F1BB8F66800828A5F /* FindMeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindMeTests.swift; sourceTree = "<group>"; };
+		8906A2911BB8F66800828A5F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8906A2961BB8F66800828A5F /* FindMeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FindMeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8906A29A1BB8F66800828A5F /* FindMeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindMeUITests.swift; sourceTree = "<group>"; };
+		8906A29C1BB8F66800828A5F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8906A2A81BB8F6B700828A5F /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		8906A2AA1BB8F6BD00828A5F /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		8906A2AC1BB8F6C500828A5F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		8906A2AE1BB8F6CD00828A5F /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		8906A2B01BB8F6D400828A5F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		8906A2B21BB8F6DB00828A5F /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		8906A2B41BB8F6E000828A5F /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		8906A2B61BB8F6E600828A5F /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		8906A2BD1BB8F7DF00828A5F /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = ../../../../usr/lib/libsqlite3.dylib; sourceTree = "<group>"; };
+		8906A2BE1BB8F7DF00828A5F /* libz.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.dylib; path = ../../../../usr/lib/libz.1.dylib; sourceTree = "<group>"; };
+		8906A2C11BB8F81800828A5F /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		8906A2C51BB9058600828A5F /* ParseFacebookUtilsV4.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseFacebookUtilsV4.framework; sourceTree = "<group>"; };
+		8906A2C91BB9063E00828A5F /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		8906A2CB1BB9066E00828A5F /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		8906A2CF1BB9084300828A5F /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
+		8906A2D11BB9440400828A5F /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
+		8906A2D31BB944EF00828A5F /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		8906A2D51BB9457D00828A5F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		8906A2D71BB9458300828A5F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		8906A2D91BB9458800828A5F /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		8906A2DB1BB9458E00828A5F /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		8906A2DD1BB9459400828A5F /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		8906A2DF1BB9459B00828A5F /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		8906A2E11BB9463300828A5F /* libicucore.A.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.A.dylib; path = ../../../../usr/lib/libicucore.A.dylib; sourceTree = "<group>"; };
+		8906A2E31BB9464600828A5F /* libc++.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.1.dylib"; path = "../../../../usr/lib/libc++.1.dylib"; sourceTree = "<group>"; };
+		8906A2E51BB9465700828A5F /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		8906A2E71BB9465B00828A5F /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		8906A2E91BB948AE00828A5F /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = "../../Downloads/installer/GoogleMaps-1.10.3/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle"; sourceTree = "<group>"; };
+		890701B61BBA42E6004FE503 /* MapTasks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapTasks.swift; sourceTree = "<group>"; };
+		895E78161BBB8F3F006E50C8 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		895E78181BBC17B7006E50C8 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
+		895E78191BBC17B7006E50C8 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8906A2741BB8F66800828A5F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8906A2E81BB9465B00828A5F /* Accelerate.framework in Frameworks */,
+				8906A2E61BB9465700828A5F /* CoreBluetooth.framework in Frameworks */,
+				8906A2E41BB9464600828A5F /* libc++.1.dylib in Frameworks */,
+				8906A2E21BB9463300828A5F /* libicucore.A.dylib in Frameworks */,
+				895E781B1BBC17B7006E50C8 /* SwiftyJSON.framework in Frameworks */,
+				8906A2C01BB8F7DF00828A5F /* libz.1.dylib in Frameworks */,
+				8906A2B11BB8F6D400828A5F /* QuartzCore.framework in Frameworks */,
+				8906A2E01BB9459B00828A5F /* OpenGLES.framework in Frameworks */,
+				8906A2DE1BB9459400828A5F /* ImageIO.framework in Frameworks */,
+				8906A2DC1BB9458E00828A5F /* GLKit.framework in Frameworks */,
+				8906A2DA1BB9458800828A5F /* CoreText.framework in Frameworks */,
+				895E781A1BBC17B7006E50C8 /* Alamofire.framework in Frameworks */,
+				8906A2D81BB9458300828A5F /* AVFoundation.framework in Frameworks */,
+				8906A2D61BB9457D00828A5F /* CoreData.framework in Frameworks */,
+				8906A2BF1BB8F7DF00828A5F /* libsqlite3.dylib in Frameworks */,
+				8906A2B71BB8F6E600828A5F /* SystemConfiguration.framework in Frameworks */,
+				8906A2B51BB8F6E000828A5F /* StoreKit.framework in Frameworks */,
+				8906A2B31BB8F6DB00828A5F /* Security.framework in Frameworks */,
+				8906A2C21BB8F81800828A5F /* Parse.framework in Frameworks */,
+				8906A2AF1BB8F6CD00828A5F /* CoreLocation.framework in Frameworks */,
+				8906A2CA1BB9063E00828A5F /* FBSDKCoreKit.framework in Frameworks */,
+				8906A2AD1BB8F6C500828A5F /* CoreGraphics.framework in Frameworks */,
+				8906A2AB1BB8F6BD00828A5F /* CFNetwork.framework in Frameworks */,
+				8906A2A91BB8F6B700828A5F /* AudioToolbox.framework in Frameworks */,
+				8906A2CC1BB9066E00828A5F /* FBSDKLoginKit.framework in Frameworks */,
+				8906A2C61BB9058600828A5F /* ParseFacebookUtilsV4.framework in Frameworks */,
+				8906A2D21BB9440400828A5F /* GoogleMaps.framework in Frameworks */,
+				8906A2D01BB9084300828A5F /* Bolts.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8906A2881BB8F66800828A5F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8906A2931BB8F66800828A5F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8906A26E1BB8F66800828A5F = {
+			isa = PBXGroup;
+			children = (
+				8906A2791BB8F66800828A5F /* FindMe */,
+				8906A28E1BB8F66800828A5F /* FindMeTests */,
+				8906A2BC1BB8F74B00828A5F /* Frameworks */,
+				8906A2991BB8F66800828A5F /* FindMeUITests */,
+				8906A2781BB8F66800828A5F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8906A2781BB8F66800828A5F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8906A2771BB8F66800828A5F /* FindMe.app */,
+				8906A28B1BB8F66800828A5F /* FindMeTests.xctest */,
+				8906A2961BB8F66800828A5F /* FindMeUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8906A2791BB8F66800828A5F /* FindMe */ = {
+			isa = PBXGroup;
+			children = (
+				8906A27A1BB8F66800828A5F /* AppDelegate.swift */,
+				8906A27C1BB8F66800828A5F /* ViewController.swift */,
+				890701B61BBA42E6004FE503 /* MapTasks.swift */,
+				8906A2D31BB944EF00828A5F /* HomeViewController.swift */,
+				895E78161BBB8F3F006E50C8 /* Constants.swift */,
+				8906A27E1BB8F66800828A5F /* Main.storyboard */,
+				8906A2811BB8F66800828A5F /* Assets.xcassets */,
+				8906A2831BB8F66800828A5F /* LaunchScreen.storyboard */,
+				8906A2861BB8F66800828A5F /* Info.plist */,
+			);
+			path = FindMe;
+			sourceTree = "<group>";
+		};
+		8906A28E1BB8F66800828A5F /* FindMeTests */ = {
+			isa = PBXGroup;
+			children = (
+				8906A28F1BB8F66800828A5F /* FindMeTests.swift */,
+				8906A2911BB8F66800828A5F /* Info.plist */,
+			);
+			path = FindMeTests;
+			sourceTree = "<group>";
+		};
+		8906A2991BB8F66800828A5F /* FindMeUITests */ = {
+			isa = PBXGroup;
+			children = (
+				8906A29A1BB8F66800828A5F /* FindMeUITests.swift */,
+				8906A29C1BB8F66800828A5F /* Info.plist */,
+			);
+			path = FindMeUITests;
+			sourceTree = "<group>";
+		};
+		8906A2BC1BB8F74B00828A5F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8906A2E11BB9463300828A5F /* libicucore.A.dylib */,
+				8906A2BD1BB8F7DF00828A5F /* libsqlite3.dylib */,
+				8906A2E31BB9464600828A5F /* libc++.1.dylib */,
+				8906A2BE1BB8F7DF00828A5F /* libz.1.dylib */,
+				895E78181BBC17B7006E50C8 /* Alamofire.framework */,
+				895E78191BBC17B7006E50C8 /* SwiftyJSON.framework */,
+				8906A2E71BB9465B00828A5F /* Accelerate.framework */,
+				8906A2E51BB9465700828A5F /* CoreBluetooth.framework */,
+				8906A2DF1BB9459B00828A5F /* OpenGLES.framework */,
+				8906A2DD1BB9459400828A5F /* ImageIO.framework */,
+				8906A2DB1BB9458E00828A5F /* GLKit.framework */,
+				8906A2D91BB9458800828A5F /* CoreText.framework */,
+				8906A2D71BB9458300828A5F /* AVFoundation.framework */,
+				8906A2D51BB9457D00828A5F /* CoreData.framework */,
+				8906A2D11BB9440400828A5F /* GoogleMaps.framework */,
+				8906A2E91BB948AE00828A5F /* GoogleMaps.bundle */,
+				8906A2CF1BB9084300828A5F /* Bolts.framework */,
+				8906A2CB1BB9066E00828A5F /* FBSDKLoginKit.framework */,
+				8906A2C11BB8F81800828A5F /* Parse.framework */,
+				8906A2C51BB9058600828A5F /* ParseFacebookUtilsV4.framework */,
+				8906A2C91BB9063E00828A5F /* FBSDKCoreKit.framework */,
+				8906A2B61BB8F6E600828A5F /* SystemConfiguration.framework */,
+				8906A2B41BB8F6E000828A5F /* StoreKit.framework */,
+				8906A2B21BB8F6DB00828A5F /* Security.framework */,
+				8906A2B01BB8F6D400828A5F /* QuartzCore.framework */,
+				8906A2AE1BB8F6CD00828A5F /* CoreLocation.framework */,
+				8906A2AC1BB8F6C500828A5F /* CoreGraphics.framework */,
+				8906A2AA1BB8F6BD00828A5F /* CFNetwork.framework */,
+				8906A2A81BB8F6B700828A5F /* AudioToolbox.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8906A2761BB8F66800828A5F /* FindMe */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8906A29F1BB8F66900828A5F /* Build configuration list for PBXNativeTarget "FindMe" */;
+			buildPhases = (
+				8906A2731BB8F66800828A5F /* Sources */,
+				8906A2741BB8F66800828A5F /* Frameworks */,
+				8906A2751BB8F66800828A5F /* Resources */,
+				895E781C1BBC17E0006E50C8 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FindMe;
+			productName = FindMe;
+			productReference = 8906A2771BB8F66800828A5F /* FindMe.app */;
+			productType = "com.apple.product-type.application";
+		};
+		8906A28A1BB8F66800828A5F /* FindMeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8906A2A21BB8F66900828A5F /* Build configuration list for PBXNativeTarget "FindMeTests" */;
+			buildPhases = (
+				8906A2871BB8F66800828A5F /* Sources */,
+				8906A2881BB8F66800828A5F /* Frameworks */,
+				8906A2891BB8F66800828A5F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8906A28D1BB8F66800828A5F /* PBXTargetDependency */,
+			);
+			name = FindMeTests;
+			productName = FindMeTests;
+			productReference = 8906A28B1BB8F66800828A5F /* FindMeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		8906A2951BB8F66800828A5F /* FindMeUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8906A2A51BB8F66900828A5F /* Build configuration list for PBXNativeTarget "FindMeUITests" */;
+			buildPhases = (
+				8906A2921BB8F66800828A5F /* Sources */,
+				8906A2931BB8F66800828A5F /* Frameworks */,
+				8906A2941BB8F66800828A5F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8906A2981BB8F66800828A5F /* PBXTargetDependency */,
+			);
+			name = FindMeUITests;
+			productName = FindMeUITests;
+			productReference = 8906A2961BB8F66800828A5F /* FindMeUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8906A26F1BB8F66800828A5F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = Coolheart;
+				TargetAttributes = {
+					8906A2761BB8F66800828A5F = {
+						CreatedOnToolsVersion = 7.0;
+					};
+					8906A28A1BB8F66800828A5F = {
+						CreatedOnToolsVersion = 7.0;
+						TestTargetID = 8906A2761BB8F66800828A5F;
+					};
+					8906A2951BB8F66800828A5F = {
+						CreatedOnToolsVersion = 7.0;
+						TestTargetID = 8906A2761BB8F66800828A5F;
+					};
+				};
+			};
+			buildConfigurationList = 8906A2721BB8F66800828A5F /* Build configuration list for PBXProject "FindMe" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8906A26E1BB8F66800828A5F;
+			productRefGroup = 8906A2781BB8F66800828A5F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8906A2761BB8F66800828A5F /* FindMe */,
+				8906A28A1BB8F66800828A5F /* FindMeTests */,
+				8906A2951BB8F66800828A5F /* FindMeUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8906A2751BB8F66800828A5F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8906A2851BB8F66800828A5F /* LaunchScreen.storyboard in Resources */,
+				8906A2821BB8F66800828A5F /* Assets.xcassets in Resources */,
+				8906A2801BB8F66800828A5F /* Main.storyboard in Resources */,
+				8906A2EA1BB948AE00828A5F /* GoogleMaps.bundle in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8906A2891BB8F66800828A5F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8906A2941BB8F66800828A5F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		895E781C1BBC17E0006E50C8 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SwiftyJSON.framework",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8906A2731BB8F66800828A5F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				895E78171BBB8F3F006E50C8 /* Constants.swift in Sources */,
+				8906A27D1BB8F66800828A5F /* ViewController.swift in Sources */,
+				890701B71BBA42E6004FE503 /* MapTasks.swift in Sources */,
+				8906A27B1BB8F66800828A5F /* AppDelegate.swift in Sources */,
+				8906A2D41BB944EF00828A5F /* HomeViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8906A2871BB8F66800828A5F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8906A2901BB8F66800828A5F /* FindMeTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8906A2921BB8F66800828A5F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8906A29B1BB8F66800828A5F /* FindMeUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8906A28D1BB8F66800828A5F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8906A2761BB8F66800828A5F /* FindMe */;
+			targetProxy = 8906A28C1BB8F66800828A5F /* PBXContainerItemProxy */;
+		};
+		8906A2981BB8F66800828A5F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8906A2761BB8F66800828A5F /* FindMe */;
+			targetProxy = 8906A2971BB8F66800828A5F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		8906A27E1BB8F66800828A5F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8906A27F1BB8F66800828A5F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		8906A2831BB8F66800828A5F /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8906A2841BB8F66800828A5F /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		8906A29D1BB8F66900828A5F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "";
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		8906A29E1BB8F66900828A5F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8906A2A01BB8F66900828A5F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = FindMe/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.coolheart.FindMe;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		8906A2A11BB8F66900828A5F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = FindMe/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.coolheart.FindMe;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		8906A2A31BB8F66900828A5F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = FindMeTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.coolheart.FindMeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FindMe.app/FindMe";
+			};
+			name = Debug;
+		};
+		8906A2A41BB8F66900828A5F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = FindMeTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.coolheart.FindMeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FindMe.app/FindMe";
+			};
+			name = Release;
+		};
+		8906A2A61BB8F66900828A5F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = FindMeUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.coolheart.FindMeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = FindMe;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		8906A2A71BB8F66900828A5F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = FindMeUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.coolheart.FindMeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = FindMe;
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8906A2721BB8F66800828A5F /* Build configuration list for PBXProject "FindMe" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8906A29D1BB8F66900828A5F /* Debug */,
+				8906A29E1BB8F66900828A5F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8906A29F1BB8F66900828A5F /* Build configuration list for PBXNativeTarget "FindMe" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8906A2A01BB8F66900828A5F /* Debug */,
+				8906A2A11BB8F66900828A5F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8906A2A21BB8F66900828A5F /* Build configuration list for PBXNativeTarget "FindMeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8906A2A31BB8F66900828A5F /* Debug */,
+				8906A2A41BB8F66900828A5F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8906A2A51BB8F66900828A5F /* Build configuration list for PBXNativeTarget "FindMeUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8906A2A61BB8F66900828A5F /* Debug */,
+				8906A2A71BB8F66900828A5F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8906A26F1BB8F66800828A5F /* Project object */;
+}
