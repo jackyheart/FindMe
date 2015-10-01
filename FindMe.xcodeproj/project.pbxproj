@@ -43,6 +43,7 @@
 		8906A2E81BB9465B00828A5F /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2E71BB9465B00828A5F /* Accelerate.framework */; };
 		8906A2EA1BB948AE00828A5F /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8906A2E91BB948AE00828A5F /* GoogleMaps.bundle */; settings = {ASSET_TAGS = (); }; };
 		890701B71BBA42E6004FE503 /* MapTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890701B61BBA42E6004FE503 /* MapTasks.swift */; settings = {ASSET_TAGS = (); }; };
+		89399F381BBD50B200D9D355 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89399F371BBD50B200D9D355 /* Place.swift */; settings = {ASSET_TAGS = (); }; };
 		895E78171BBB8F3F006E50C8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 895E78161BBB8F3F006E50C8 /* Constants.swift */; settings = {ASSET_TAGS = (); }; };
 		895E781A1BBC17B7006E50C8 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 895E78181BBC17B7006E50C8 /* Alamofire.framework */; settings = {ASSET_TAGS = (); }; };
 		895E781B1BBC17B7006E50C8 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 895E78191BBC17B7006E50C8 /* SwiftyJSON.framework */; settings = {ASSET_TAGS = (); }; };
@@ -108,6 +109,7 @@
 		8906A2E71BB9465B00828A5F /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		8906A2E91BB948AE00828A5F /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = "../../Downloads/installer/GoogleMaps-1.10.3/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle"; sourceTree = "<group>"; };
 		890701B61BBA42E6004FE503 /* MapTasks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapTasks.swift; sourceTree = "<group>"; };
+		89399F371BBD50B200D9D355 /* Place.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		895E78161BBB8F3F006E50C8 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		895E78181BBC17B7006E50C8 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		895E78191BBC17B7006E50C8 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 				890701B61BBA42E6004FE503 /* MapTasks.swift */,
 				8906A2D31BB944EF00828A5F /* HomeViewController.swift */,
 				895E78161BBB8F3F006E50C8 /* Constants.swift */,
+				89399F371BBD50B200D9D355 /* Place.swift */,
 				8906A27E1BB8F66800828A5F /* Main.storyboard */,
 				8906A2811BB8F66800828A5F /* Assets.xcassets */,
 				8906A2831BB8F66800828A5F /* LaunchScreen.storyboard */,
@@ -410,6 +413,7 @@
 				895E78171BBB8F3F006E50C8 /* Constants.swift in Sources */,
 				8906A27D1BB8F66800828A5F /* ViewController.swift in Sources */,
 				890701B71BBA42E6004FE503 /* MapTasks.swift in Sources */,
+				89399F381BBD50B200D9D355 /* Place.swift in Sources */,
 				8906A27B1BB8F66800828A5F /* AppDelegate.swift in Sources */,
 				8906A2D41BB944EF00828A5F /* HomeViewController.swift in Sources */,
 			);

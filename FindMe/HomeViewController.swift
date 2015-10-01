@@ -9,9 +9,6 @@
 import UIKit
 import GoogleMaps
 
-import Alamofire
-import SwiftyJSON
-
 enum TravelModes: Int {
     case Driving
     case Walking
@@ -35,6 +32,8 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
     var destinationMarker: GMSMarker!
     var routePolyline: GMSPolyline!
     var travelMode = TravelModes.Driving
+    
+    var currentLocationString:String = "Hong Kong"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,17 +45,19 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
         locationManager.requestWhenInUseAuthorization()
         
         //map
-        let camera  = GMSCameraPosition.cameraWithLatitude(-33.86, longitude: 151.20, zoom: 6)
+        //37.3319248,-122.0297007 (Apple, Cupertino)
+        let camera  = GMSCameraPosition.cameraWithLatitude(37.3319248, longitude: -122.0297007, zoom: 6)
         
         mapView.camera = camera
-        //mapView = GMSMapView.mapWithFrame(mapView.frame, camera: camera)
         mapView.myLocationEnabled = true
-        self.view.addSubview(mapView)
+        mapView.settings.compassButton = true
+        mapView.settings.myLocationButton = true
         
+        //marker
         let marker = GMSMarker()
-        marker.position = CLLocationCoordinate2D(latitude: -33.86, longitude: 151.20)
-        marker.title = "Sydney"
-        marker.snippet = "Australia"
+        marker.position = CLLocationCoordinate2D(latitude: 37.3319248, longitude: -122.0297007)
+        marker.title = "Apple"
+        marker.snippet = "Cupertino"
         marker.map = mapView
         
         //observe change
@@ -93,10 +94,8 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
         let segment = sender as! UISegmentedControl
         
         if segment.selectedSegmentIndex == 0 {
-        
-            //mapView.mapType = kGMSTypeNormal
             
-            createRoute(self)
+            mapView.mapType = kGMSTypeNormal
             
         } else if segment.selectedSegmentIndex == 1 {
             
@@ -143,69 +142,54 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
     
     func findAddress(address: String) {
         
-        /*
-        let addressAlert = UIAlertController(title: "Address Finder", message: "Type the address you want to find:", preferredStyle: UIAlertControllerStyle.Alert)
-        
-        addressAlert.addTextFieldWithConfigurationHandler { (textField) -> Void in
-            textField.placeholder = "Address?"
-        }
-        
-        let findAction = UIAlertAction(title: "Find Address", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
-            let address = (addressAlert.textFields![0]).text
-            
-            self.mapTasks.geocodeAddress(address, withCompletionHandler: { (status, success) -> Void in
-              
-                if !success {
-                    print(status)
-                    
-                    if status == "ZERO_RESULTS" {
-                        self.showAlertWithMessage("The location could not be found.")
-                    }
-                }
-                else {
-                    let coordinate = CLLocationCoordinate2D(latitude: self.mapTasks.fetchedAddressLatitude, longitude: self.mapTasks.fetchedAddressLongitude)
-                    self.mapView.camera = GMSCameraPosition.cameraWithTarget(coordinate, zoom: 14.0)
-                    
-                    self.setuplocationMarker(coordinate)
-                }
-            })
-        }
-        
-        let closeAction = UIAlertAction(title: "Close", style: UIAlertActionStyle.Cancel) { (alertAction) -> Void in
-            
-        }
-        
-        addressAlert.addAction(findAction)
-        addressAlert.addAction(closeAction)
-        
-        presentViewController(addressAlert, animated: true, completion: nil)
-        */
-        
-        self.mapTasks.geocodeAddress(address, withCompletionHandler: { (status, success) -> Void in
+        self.mapTasks.geocodeAddress(address, withCompletionHandler: { (success, results) -> Void in
             
             self.searchTF.resignFirstResponder()
             
-            if !success {
-                print(status)
+            if (!success) {
+            
+                self.showAlertWithMessage("Error getting location.\n")
+                return
+            }
+            
+            let results = results!
+            let status = results["status"] as! String
+            
+            if status == kGMAPSTATUS_ZERO_RESULTS {
                 
-                if status == kGMAPSTATUS_ZERO_RESULTS {
-                    self.showAlertWithMessage("The location could not be found.")
+                self.showAlertWithMessage("The location could not be found.")
+                
+            } else if status == kGMAPSTATUS_OK {
+            
+                let allResults = results["results"] as! [[NSObject:AnyObject]]
+                
+                if allResults.count > 0 {
+                
+                    let result = allResults[0]
+                    
+                    let geometry = result["geometry"] as! [NSObject:AnyObject]
+                    let latitude = ((geometry["location"]as! [NSObject:AnyObject])["lat"] as! NSNumber).doubleValue
+                    let longitude = ((geometry["location"] as! [NSObject:AnyObject])["lng"] as! NSNumber).doubleValue
+                    
+                    let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+                    self.mapView.camera = GMSCameraPosition.cameraWithTarget(coordinate, zoom: 10.0)
+                    
+                    self.setuplocationMarker(coordinate)
                 }
             }
             else {
-                let coordinate = CLLocationCoordinate2D(latitude: self.mapTasks.fetchedAddressLatitude, longitude: self.mapTasks.fetchedAddressLongitude)
-                self.mapView.camera = GMSCameraPosition.cameraWithTarget(coordinate, zoom: 10.0)
-                
-                self.setuplocationMarker(coordinate)
+            
+                self.showAlertWithMessage("Unknown Google Map Errors.")
             }
         })
     }
     
     func showAlertWithMessage(message: String) {
-        let alertController = UIAlertController(title: "GMapsDemo", message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        
+        let appName = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleName") as! String
+        let alertController = UIAlertController(title: appName, message: message, preferredStyle: UIAlertControllerStyle.Alert)
         
         let closeAction = UIAlertAction(title: "Close", style: UIAlertActionStyle.Cancel) { (alertAction) -> Void in
-            
         }
         
         alertController.addAction(closeAction)
@@ -221,6 +205,7 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
         
         locationMarker = GMSMarker(position: coordinate)
         locationMarker.map = mapView
+        locationMarker.appearAnimation = kGMSMarkerAnimationPop
         
         locationMarker.title = mapTasks.fetchedFormattedAddress
         locationMarker.appearAnimation = kGMSMarkerAnimationPop
@@ -232,70 +217,81 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
     }
     
     func createRoute(sender: AnyObject) {
-        let addressAlert = UIAlertController(title: "Create Route", message: "Connect locations with a route:", preferredStyle: UIAlertControllerStyle.Alert)
         
-        addressAlert.addTextFieldWithConfigurationHandler { (textField) -> Void in
-            textField.placeholder = "Origin?"
-        }
+        let origin = currentLocationString
+        let destination = self.searchTF.text!
         
-        addressAlert.addTextFieldWithConfigurationHandler { (textField) -> Void in
-            textField.placeholder = "Destination?"
-        }
-        
-        let createRouteAction = UIAlertAction(title: "Create Route", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
-            let origin = (addressAlert.textFields![0]).text!
-            let destination = (addressAlert.textFields![1]).text!
+        self.mapTasks.getDirections(origin, destination: destination, waypoints: nil, travelMode: self.travelMode, completionHandler: { (success, dictionary) -> Void in
             
-            self.mapTasks.getDirections(origin, destination: destination, waypoints: nil, travelMode: self.travelMode, completionHandler: { (status, success) -> Void in
-                
-                self.searchTF.resignFirstResponder()
-                
-                if success {
-                    self.configureMapAndMarkersForRoute()
-                    self.drawRoute()
-                    self.displayRouteInfo()
-                }
-                else {
-                    print(status)
-                }
-            })
-        }
-        
-        let closeAction = UIAlertAction(title: "Close", style: UIAlertActionStyle.Cancel) { (alertAction) -> Void in
+            self.searchTF.resignFirstResponder()
             
-        }
-        
-        addressAlert.addAction(createRouteAction)
-        addressAlert.addAction(closeAction)
-        
-        presentViewController(addressAlert, animated: true, completion: nil)
+            if (!success) {
+                
+                self.showAlertWithMessage("Error calculating route.\n")
+                return
+            }
+            
+            let dictionary = dictionary!
+            let status = dictionary["status"] as! String
+            
+            if status == kGMAPSTATUS_OK {
+                
+                let selectedRoute = (dictionary["routes"] as! [[NSObject:AnyObject]])[0]
+                
+                self.configureMapAndMarkersForRoute(selectedRoute)
+                self.drawRoute(selectedRoute)
+                self.displayRouteInfo(selectedRoute)
+                
+                let legs = selectedRoute["legs"] as! [[NSObject:AnyObject]]
+                let startLocationDictionary = legs[0]["start_location"] as! [NSObject:AnyObject]
+                let originCoordinate = CLLocationCoordinate2DMake(startLocationDictionary["lat"] as! Double, startLocationDictionary["lng"] as! Double)
+                
+                self.mapView.camera = GMSCameraPosition.cameraWithTarget(originCoordinate, zoom: 6.0)
+            }
+            else {
+                
+                self.showAlertWithMessage("No routes found !")
+            }
+        })
     }
     
-    func configureMapAndMarkersForRoute() {
+    func configureMapAndMarkersForRoute(routeDict:[NSObject:AnyObject]) {
     
-        originMarker = GMSMarker(position: self.mapTasks.originCoordinate)
+        let legs = routeDict["legs"] as! Array<Dictionary<NSObject, AnyObject>>
+        
+        let startLocationDictionary = legs[0]["start_location"] as! [NSObject:AnyObject]
+        let originCoordinate = CLLocationCoordinate2DMake(startLocationDictionary["lat"] as! Double, startLocationDictionary["lng"] as! Double)
+        
+        let endLocationDictionary = legs[legs.count - 1]["end_location"] as! [NSObject:AnyObject]
+        let destinationCoordinate = CLLocationCoordinate2DMake(endLocationDictionary["lat"] as! Double, endLocationDictionary["lng"] as! Double)
+        
+        let originAddress = legs[0]["start_address"] as! String
+        let destinationAddress = legs[legs.count - 1]["end_address"] as! String
+        
+        let originMarker = GMSMarker(position: originCoordinate)
         originMarker.map = self.mapView
         originMarker.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
-        originMarker.title = self.mapTasks.originAddress
+        originMarker.title = originAddress
         
-        destinationMarker = GMSMarker(position: self.mapTasks.destinationCoordinate)
+        let destinationMarker = GMSMarker(position: destinationCoordinate)
         destinationMarker.map = self.mapView
         destinationMarker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
-        destinationMarker.title = self.mapTasks.destinationAddress
+        destinationMarker.title = destinationAddress
     }
     
-    func drawRoute() {
-        let route = mapTasks.overviewPolyline["points"] as! String
+    func drawRoute(routeDict:[NSObject:AnyObject]) {
+        
+        let overviewPolyline = routeDict["overview_polyline"] as! [NSObject:AnyObject]
+        let route = overviewPolyline["points"] as! String
         
         let path: GMSPath = GMSPath(fromEncodedPath: route)
-        routePolyline = GMSPolyline(path: path)
+        let routePolyline = GMSPolyline(path: path)
         routePolyline.map = mapView
     }
     
-    func displayRouteInfo() {
-        let distance = mapTasks.totalDistance + "\n" + mapTasks.totalDuration
+    func displayRouteInfo(routeDict:[NSObject:AnyObject]) {
         
-        print("\(distance)\n")
+        MapTasks.calculateTotalDistanceAndDuration(routeDict)
     }
     
     func clearRoute() {
@@ -323,6 +319,7 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
             
             mapTasks.getDirections(mapTasks.originAddress, destination: mapTasks.destinationAddress, waypoints: waypointsArray, travelMode: nil, completionHandler: { (status, success) -> Void in
                 
+                /*
                 if success {
                     self.configureMapAndMarkersForRoute()
                     self.drawRoute()
@@ -331,11 +328,17 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
                 else {
                     print(status)
                 }
+                */
             })
         }
     }
     
     //MARK: - UITextFieldDelegate
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+        
+        textField.text = ""
+    }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         

@@ -8,16 +8,18 @@
 
 import UIKit
 import CoreLocation
+import Alamofire
+import SwiftyJSON
 
 class MapTasks: NSObject {
 
-    let baseURLGeocode = "https://maps.googleapis.com/maps/api/geocode/json?"
+    let baseURLGeocode = "https://maps.googleapis.com/maps/api/geocode/json"
     var lookupAddressResults: Dictionary<NSObject, AnyObject>!
     var fetchedFormattedAddress: String!
     var fetchedAddressLongitude: Double!
     var fetchedAddressLatitude: Double!
     
-    let baseURLDirections = "https://maps.googleapis.com/maps/api/directions/json?"
+    let baseURLDirections = "https://maps.googleapis.com/maps/api/directions/json"
     var selectedRoute: Dictionary<NSObject, AnyObject>!
     var overviewPolyline: Dictionary<NSObject, AnyObject>!
     var originCoordinate: CLLocationCoordinate2D!
@@ -33,198 +35,131 @@ class MapTasks: NSObject {
     override init() {
         super.init()
     }
-    
-    func geocodeAddress(address: String!, withCompletionHandler completionHandler: ((status: String, success: Bool) -> Void)) {
-        
-        if let lookupAddress = address {
-            
-            var geocodeURLString = baseURLGeocode + "address=" + lookupAddress
-            geocodeURLString = geocodeURLString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
-            let geocodeURL = NSURL(string: geocodeURLString)
-            
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                let geocodingResultsData = NSData(contentsOfURL: geocodeURL!)
-                
-                do {
-                    let dictionary: Dictionary<NSObject, AnyObject> = try NSJSONSerialization.JSONObjectWithData(geocodingResultsData!, options: NSJSONReadingOptions.MutableContainers) as! Dictionary<NSObject, AnyObject>
-                    
-                    print("dictionary: \(dictionary)\n")
-                    
-                    /*
-                    [results: (
+
+    func geocodeAddress(address: String!, withCompletionHandler completionHandler: (success:Bool, routes:[String:AnyObject]?) -> Void) {
+
+        /*
+        {
+            results =     (
+                {
+                    "address_components" =             (
                         {
-                            "address_components" =         (
-                                {
-                                    "long_name" = Singapore;
-                                    "short_name" = SG;
-                                    types =                 (
-                                        country,
-                                        political
-                                    );
-                                }
-                            );
-                            "formatted_address" = Singapore;
-                            geometry =         {
-                                bounds =             {
-                                    northeast =                 {
-                                        lat = "1.4707592";
-                                        lng = "104.0884808";
-                                    };
-                                    southwest =                 {
-                                        lat = "1.1587023";
-                                        lng = "103.6055448";
-                                    };
-                                };
-                                location =             {
-                                    lat = "1.352083";
-                                    lng = "103.819836";
-                                };
-                                "location_type" = APPROXIMATE;
-                                viewport =             {
-                                    northeast =                 {
-                                        lat = "1.4707592";
-                                        lng = "104.0884808";
-                                    };
-                                    southwest =                 {
-                                        lat = "1.1587023";
-                                        lng = "103.6055448";
-                                    };
-                                };
-                            };
-                            "place_id" = ChIJdZOLiiMR2jERxPWrUs9peIg;
-                            types =         (
+                            "long_name" = Singapore;
+                            "short_name" = SG;
+                            types =                     (
                                 country,
                                 political
                             );
                         }
-                        ), status: OK]
-                    */
-                    
-                    
-                    // Get the response status.
-                    let status = dictionary["status"] as! String
-                    
-                    if status == kGMAPSTATUS_OK {
-                        
-                        let allResults = dictionary["results"] as! Array<Dictionary<NSObject, AnyObject>>
-                        self.lookupAddressResults = allResults[0]
-                        
-                        // Keep the most important values.
-                        self.fetchedFormattedAddress = self.lookupAddressResults["formatted_address"] as! String
-                        let geometry = self.lookupAddressResults["geometry"] as! Dictionary<NSObject, AnyObject>
-                        self.fetchedAddressLongitude = ((geometry["location"] as! Dictionary<NSObject, AnyObject>)["lng"] as! NSNumber).doubleValue
-                        self.fetchedAddressLatitude = ((geometry["location"]as! Dictionary<NSObject, AnyObject>)["lat"] as! NSNumber).doubleValue
-                        
-                        completionHandler(status: status, success: true)
-                    }
-                    else {
-                        completionHandler(status: status, success: false)
-                    }
-                    
-                } catch {
-                
+                    );
+                    "formatted_address" = Singapore;
+                    geometry =             {
+                        bounds =                 {
+                            northeast =                     {
+                                lat = "1.4707592";
+                                lng = "104.0884808";
+                            };
+                            southwest =                     {
+                                lat = "1.1587023";
+                                lng = "103.6055448";
+                            };
+                        };
+                        location =                 {
+                            lat = "1.352083";
+                            lng = "103.819836";
+                        };
+                        "location_type" = APPROXIMATE;
+                        viewport =                 {
+                            northeast =                     {
+                                lat = "1.4707592";
+                                lng = "104.0884808";
+                            };
+                            southwest =                     {
+                                lat = "1.1587023";
+                                lng = "103.6055448";
+                            };
+                        };
+                    };
+                    "place_id" = ChIJdZOLiiMR2jERxPWrUs9peIg;
+                    types =             (
+                        country,
+                        political
+                    );
                 }
-            })
-        } else {
-        
-             completionHandler(status: "No valid address.", success: false)
+            );
+            status = OK;
         }
+        */
+        
+        Alamofire.request(.GET, baseURLGeocode, parameters: ["address":address], encoding: ParameterEncoding.URLEncodedInURL, headers: nil).response(completionHandler: { (request, response, data, errorType) -> Void in
+            
+            do {
+            
+                let dictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments)
+                print("geocode dictionary:\n\(dictionary)\n")
+                completionHandler(success: true, routes: dictionary as? [String : AnyObject])
+            }
+            catch {
+            
+                print("geocode error: \(error)\n")
+                completionHandler(success: false, routes: nil)
+            }
+        })
     }
     
-    func getDirections(origin: String!, destination: String!, waypoints: Array<String>!, travelMode: TravelModes!, completionHandler: ((status: String, success: Bool) -> Void)) {
+    func getDirections(origin: String!, destination: String!, waypoints: Array<String>!, travelMode: TravelModes!, completionHandler: (success:Bool, routes:[String:AnyObject]?) -> Void) {
      
-        if let originLocation = origin {
-            if let destinationLocation = destination {
-                var directionsURLString = baseURLDirections + "origin=" + originLocation + "&destination=" + destinationLocation
-                directionsURLString = directionsURLString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
-                let directionsURL = NSURL(string: directionsURLString)
-                
-                if let _ = travelMode {
-                    
-                    var travelModeString = ""
-                    
-                    switch travelMode.rawValue {
-                        
-                    case TravelModes.Walking.rawValue:
-                        travelModeString = "walking"
-                        
-                    case TravelModes.Bicycling.rawValue:
-                        travelModeString = "bicycling"
-                        
-                    case TravelModes.Transit.rawValue:
-                        travelModeString = "transit"
-                        
-                    default:
-                        travelModeString = "driving"
-                    }
-                    
-                    directionsURLString += "&mode=" + travelModeString
-                }
-                
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    let directionsData = NSData(contentsOfURL: directionsURL!)
-                    
-                    do {
-                        
-                        let dictionary: Dictionary<NSObject, AnyObject> = try NSJSONSerialization.JSONObjectWithData(directionsData!, options: NSJSONReadingOptions.MutableContainers) as! Dictionary<NSObject, AnyObject>
-                        
-                        print("route dict:\n\(dictionary)\n")
-                        
-                        let status = dictionary["status"] as! String
-                        
-                        if status == kGMAPSTATUS_OK {
-                            self.selectedRoute = (dictionary["routes"] as! Array<Dictionary<NSObject, AnyObject>>)[0]
-                            self.overviewPolyline = self.selectedRoute["overview_polyline"] as! Dictionary<NSObject, AnyObject>
-                            
-                            let legs = self.selectedRoute["legs"] as! Array<Dictionary<NSObject, AnyObject>>
-                            
-                            let startLocationDictionary = legs[0]["start_location"] as! Dictionary<NSObject, AnyObject>
-                            self.originCoordinate = CLLocationCoordinate2DMake(startLocationDictionary["lat"] as! Double, startLocationDictionary["lng"] as! Double)
-                            
-                            let endLocationDictionary = legs[legs.count - 1]["end_location"] as! Dictionary<NSObject, AnyObject>
-                            self.destinationCoordinate = CLLocationCoordinate2DMake(endLocationDictionary["lat"] as! Double, endLocationDictionary["lng"] as! Double)
-                            
-                            self.originAddress = legs[0]["start_address"] as! String
-                            self.destinationAddress = legs[legs.count - 1]["end_address"] as! String
-                            
-                            self.calculateTotalDistanceAndDuration()
-                            
-                            completionHandler(status: status, success: true)
-                        }
-                        else {
-                            completionHandler(status: status, success: false)
-                        }
-                        
-                    } catch {
-                    
-                        print(error)
-                    }
-                })
-            }
-            else {
-                completionHandler(status: "Destination is nil.", success: false)
-            }
+        var travelModeString = ""
+        
+        switch travelMode.rawValue {
+            
+        case TravelModes.Walking.rawValue:
+            travelModeString = "walking"
+            
+        case TravelModes.Bicycling.rawValue:
+            travelModeString = "bicycling"
+            
+        case TravelModes.Transit.rawValue:
+            travelModeString = "transit"
+            
+        default:
+            travelModeString = "driving"
         }
-        else {
-            completionHandler(status: "Origin is nil", success: false)
+        
+        Alamofire.request(.GET, baseURLDirections, parameters: ["origin":origin, "destination":destination, "mode":travelModeString], encoding: .URLEncodedInURL, headers: nil).response { (request, response, data, error) -> Void in
+            
+            print("request:\(request)\n")
+            print("response:\(response)\n")
+            
+            do {
+                
+                let dictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments)
+                
+                print("direction dictionary:\n\(dictionary)\n")
+                completionHandler(success: true, routes: dictionary as? [String : AnyObject])
+            }
+            catch {
+                
+                print("direction error: \(error)\n")
+                completionHandler(success: false, routes: nil)
+            }
         }
     }
     
-    func calculateTotalDistanceAndDuration() {
-        let legs = self.selectedRoute["legs"] as! Array<Dictionary<NSObject, AnyObject>>
+    class func calculateTotalDistanceAndDuration(routeDictionary: [NSObject:AnyObject]) {
         
-        totalDistanceInMeters = 0
-        totalDurationInSeconds = 0
+        let legs = routeDictionary["legs"] as! Array<Dictionary<NSObject, AnyObject>>
+        
+        var totalDistanceInMeters:UInt = 0
+        var totalDurationInSeconds:UInt = 0
         
         for leg in legs {
             totalDistanceInMeters += (leg["distance"] as! Dictionary<NSObject, AnyObject>)["value"] as! UInt
             totalDurationInSeconds += (leg["duration"] as! Dictionary<NSObject, AnyObject>)["value"] as! UInt
         }
         
-        
         let distanceInKilometers: Double = Double(totalDistanceInMeters / 1000)
-        totalDistance = "Total Distance: \(distanceInKilometers) Km"
-        
+        let totalDistance = "Total Distance: \(distanceInKilometers) Km"
         
         let mins = totalDurationInSeconds / 60
         let hours = mins / 60
@@ -233,6 +168,8 @@ class MapTasks: NSObject {
         let remainingMins = mins % 60
         let remainingSecs = totalDurationInSeconds % 60
         
-        totalDuration = "Duration: \(days) d, \(remainingHours) h, \(remainingMins) mins, \(remainingSecs) secs"
+        let totalDuration = "Duration: \(days) d, \(remainingHours) h, \(remainingMins) mins, \(remainingSecs) secs"
+        
+        print(totalDistance + " " + totalDuration)
     }
 }
