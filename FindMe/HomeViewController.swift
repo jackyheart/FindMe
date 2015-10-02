@@ -33,8 +33,9 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
     var routePolyline: GMSPolyline!
     var travelMode = TravelModes.Driving
     
-    var currentLocationString:String = "Hong Kong"
-
+    var placesClient:GMSPlacesClient!
+    var placePicker:GMSPlacePicker!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -46,12 +47,12 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
         
         //map
         //37.3319248,-122.0297007 (Apple, Cupertino)
+        /*
         let camera  = GMSCameraPosition.cameraWithLatitude(37.3319248, longitude: -122.0297007, zoom: 6)
         
         mapView.camera = camera
         mapView.myLocationEnabled = true
         mapView.settings.compassButton = true
-        mapView.settings.myLocationButton = true
         
         //marker
         let marker = GMSMarker()
@@ -62,6 +63,35 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
         
         //observe change
         mapView.addObserver(self, forKeyPath: "myLocation", options: NSKeyValueObservingOptions.New, context: nil)
+        */
+        
+        //places
+        self.placesClient = GMSPlacesClient()
+        
+        self.placesClient.currentPlaceWithCallback { (likelihoodList, error) -> Void in
+            
+            if let error = error {
+                print("Pick Place error: \(error.localizedDescription)\n")
+                return
+            }
+            
+            if let placeLikelihoodList = likelihoodList {
+            
+                let gmsPlace = placeLikelihoodList.likelihoods.first?.place
+                
+                if let gmsPlace = gmsPlace {
+                
+                    let place = Place(coordinate: gmsPlace.coordinate)
+                    place.name = gmsPlace.name
+                    place.formattedAddress = gmsPlace.formattedAddress
+                    
+                    print("gmsPlace: \(gmsPlace)\n")
+                    
+                    self.mapView.camera = GMSCameraPosition.cameraWithTarget(gmsPlace.coordinate, zoom: 12.0)
+                    self.placeLocationMarker(place)
+                }
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -79,12 +109,27 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
         }
     }
     
+    func locationManager(manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation) {
+        
+        print("oldLocation: \(oldLocation)\n")
+        print("newLocation: \(newLocation)\n")
+    }
+    
+    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+        
+        print("locationManager error: \(error)\n")
+    }
+    
     //MARK: - KVO
+    
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         
         let myLocation = change![NSKeyValueChangeNewKey] as! CLLocation
         mapView.camera = GMSCameraPosition.cameraWithTarget(myLocation.coordinate, zoom: 10.0)
         mapView.settings.myLocationButton = true
+        
+        print("\nmyLocation: \(mapView.myLocation.coordinate)\n")
+        //22.284681, 114.158177
     }
     
     //MARK: - IBActions
@@ -109,7 +154,48 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
     
     @IBAction func getDirections(sender: AnyObject) {
         
-        createRoute(self)
+        //createRoute(self)
+        
+        /*
+        if UIApplication.sharedApplication().canOpenURL(NSURL(string: "comgooglemaps://")!) {
+        
+            print("Google Maps app installed. Do something.\n")
+            
+            UIApplication.sharedApplication().openURL(NSURL(string:
+                "comgooglemaps://?center=40.765819,-73.975866&zoom=14&views=traffic")!)
+            
+        } else {
+        
+            self.showAlertWithMessage("No Google Maps app installed on this device.")
+        }
+        */
+        
+        let center = CLLocationCoordinate2DMake(37.788204, -122.411937)
+        let northEast = CLLocationCoordinate2DMake(center.latitude + 0.001, center.longitude + 0.001)
+        let southWest = CLLocationCoordinate2DMake(center.latitude - 0.001, center.longitude - 0.001)
+        let viewport = GMSCoordinateBounds(coordinate: northEast, coordinate: southWest)
+        let config = GMSPlacePickerConfig(viewport: viewport)
+        placePicker = GMSPlacePicker(config: config)
+        
+        placePicker?.pickPlaceWithCallback({ (place: GMSPlace?, error: NSError?) -> Void in
+            if let error = error {
+                print("Pick Place error: \(error.localizedDescription)\n")
+                return
+            }
+            
+            if let place = place {
+                let nameLabelText = place.name
+                let addressLabelText = place.formattedAddress.componentsSeparatedByString(", ").joinWithSeparator("\n")
+                print("\(nameLabelText) \(addressLabelText)\n")
+                
+            } else {
+                
+                let nameLabelText = "No place selected"
+                let addressLabelText = ""
+                
+                print("\(nameLabelText) \(addressLabelText)\n")
+            }
+        })
     }
     
     @IBAction func changeTransitModes(sender: AnyObject) {
@@ -138,7 +224,7 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
         self.recreateRoute()
     }
     
-    //MARK: - Helpers
+    //MARK: - Geocoding
     
     func findAddress(address: String) {
         
@@ -174,7 +260,12 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
                     let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
                     self.mapView.camera = GMSCameraPosition.cameraWithTarget(coordinate, zoom: 10.0)
                     
-                    self.setuplocationMarker(coordinate)
+                    let place:Place = Place(coordinate: coordinate)
+                    place.placeID = result["place_id"] as! String
+                    place.name = result["address_components"]![0]["long_name"] as! String
+                    place.formattedAddress = result["formatted_address"] as! String
+                    
+                    self.placeLocationMarker(place)
                 }
             }
             else {
@@ -183,6 +274,8 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
             }
         })
     }
+    
+    //MARK: - Helpers
     
     func showAlertWithMessage(message: String) {
         
@@ -197,28 +290,26 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
         presentViewController(alertController, animated: true, completion: nil)
     }
     
-    func setuplocationMarker(coordinate: CLLocationCoordinate2D) {
+    func placeLocationMarker(place: Place!) {
         
         if locationMarker != nil {
             locationMarker.map = nil
         }
         
-        locationMarker = GMSMarker(position: coordinate)
+        locationMarker = GMSMarker(position: place.coordinate)
         locationMarker.map = mapView
         locationMarker.appearAnimation = kGMSMarkerAnimationPop
+        locationMarker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
         
-        locationMarker.title = mapTasks.fetchedFormattedAddress
-        locationMarker.appearAnimation = kGMSMarkerAnimationPop
-        locationMarker.icon = GMSMarker.markerImageWithColor(UIColor.blueColor())
-        locationMarker.opacity = 0.75
-        
-        locationMarker.flat = true
-        locationMarker.snippet = "The best place on earth."
+        locationMarker.title = place.name
+        locationMarker.snippet = place.formattedAddress
     }
+    
+    //MARK: - Directions / Routing
     
     func createRoute(sender: AnyObject) {
         
-        let origin = currentLocationString
+        let origin = self.mapView.myLocation.coordinate
         let destination = self.searchTF.text!
         
         self.mapTasks.getDirections(origin, destination: destination, waypoints: nil, travelMode: self.travelMode, completionHandler: { (success, dictionary) -> Void in
@@ -238,10 +329,12 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
                 
                 let selectedRoute = (dictionary["routes"] as! [[NSObject:AnyObject]])[0]
                 
+                //plot route
                 self.configureMapAndMarkersForRoute(selectedRoute)
                 self.drawRoute(selectedRoute)
                 self.displayRouteInfo(selectedRoute)
                 
+                //camera
                 let legs = selectedRoute["legs"] as! [[NSObject:AnyObject]]
                 let startLocationDictionary = legs[0]["start_location"] as! [NSObject:AnyObject]
                 let originCoordinate = CLLocationCoordinate2DMake(startLocationDictionary["lat"] as! Double, startLocationDictionary["lng"] as! Double)
@@ -275,7 +368,7 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
         
         let destinationMarker = GMSMarker(position: destinationCoordinate)
         destinationMarker.map = self.mapView
-        destinationMarker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
+        destinationMarker.icon = GMSMarker.markerImageWithColor(UIColor.blueColor())
         destinationMarker.title = destinationAddress
     }
     
@@ -295,6 +388,7 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
     }
     
     func clearRoute() {
+        
         originMarker.map = nil
         destinationMarker.map = nil
         routePolyline.map = nil
@@ -317,9 +411,10 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
         if let _ = routePolyline {
             clearRoute()
             
+            /*
             mapTasks.getDirections(mapTasks.originAddress, destination: mapTasks.destinationAddress, waypoints: waypointsArray, travelMode: nil, completionHandler: { (status, success) -> Void in
                 
-                /*
+                
                 if success {
                     self.configureMapAndMarkersForRoute()
                     self.drawRoute()
@@ -328,8 +423,9 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
                 else {
                     print(status)
                 }
-                */
+                
             })
+            */
         }
     }
     
@@ -344,7 +440,16 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
         
         print("textFieldShouldReturn\n")
         
-        findAddress(textField.text!)
+        let address = textField.text?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+        
+        if address?.characters.count == 0 {
+        
+            self.showAlertWithMessage("Please enter a place name")
+            
+        } else {
+        
+            findAddress(address!)
+        }
         
         return true
     }

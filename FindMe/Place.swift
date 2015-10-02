@@ -11,9 +11,15 @@ import CoreLocation
 
 class Place: NSObject {
 
-    var formattedAddress:String!
+    var name:String = ""
+    var formattedAddress:String = ""
     var boundsNE:CLLocationCoordinate2D!
     var boundsSW:CLLocationCoordinate2D!
-    var location:CLLocationCoordinate2D!
-    var placeID:String!
+    var coordinate:CLLocationCoordinate2D!
+    var placeID:String = ""
+    
+    init(coordinate: CLLocationCoordinate2D) {
+    
+        self.coordinate = coordinate
+    }
 }

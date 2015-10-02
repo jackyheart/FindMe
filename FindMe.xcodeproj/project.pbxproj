@@ -26,10 +26,7 @@
 		8906A2C01BB8F7DF00828A5F /* libz.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2BE1BB8F7DF00828A5F /* libz.1.dylib */; };
 		8906A2C21BB8F81800828A5F /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2C11BB8F81800828A5F /* Parse.framework */; settings = {ASSET_TAGS = (); }; };
 		8906A2C61BB9058600828A5F /* ParseFacebookUtilsV4.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2C51BB9058600828A5F /* ParseFacebookUtilsV4.framework */; settings = {ASSET_TAGS = (); }; };
-		8906A2CA1BB9063E00828A5F /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2C91BB9063E00828A5F /* FBSDKCoreKit.framework */; settings = {ASSET_TAGS = (); }; };
-		8906A2CC1BB9066E00828A5F /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2CB1BB9066E00828A5F /* FBSDKLoginKit.framework */; settings = {ASSET_TAGS = (); }; };
 		8906A2D01BB9084300828A5F /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2CF1BB9084300828A5F /* Bolts.framework */; settings = {ASSET_TAGS = (); }; };
-		8906A2D21BB9440400828A5F /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2D11BB9440400828A5F /* GoogleMaps.framework */; settings = {ASSET_TAGS = (); }; };
 		8906A2D41BB944EF00828A5F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8906A2D31BB944EF00828A5F /* HomeViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		8906A2D61BB9457D00828A5F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2D51BB9457D00828A5F /* CoreData.framework */; };
 		8906A2D81BB9458300828A5F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2D71BB9458300828A5F /* AVFoundation.framework */; };
@@ -41,12 +38,15 @@
 		8906A2E41BB9464600828A5F /* libc++.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2E31BB9464600828A5F /* libc++.1.dylib */; };
 		8906A2E61BB9465700828A5F /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2E51BB9465700828A5F /* CoreBluetooth.framework */; };
 		8906A2E81BB9465B00828A5F /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2E71BB9465B00828A5F /* Accelerate.framework */; };
-		8906A2EA1BB948AE00828A5F /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8906A2E91BB948AE00828A5F /* GoogleMaps.bundle */; settings = {ASSET_TAGS = (); }; };
 		890701B71BBA42E6004FE503 /* MapTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890701B61BBA42E6004FE503 /* MapTasks.swift */; settings = {ASSET_TAGS = (); }; };
 		89399F381BBD50B200D9D355 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89399F371BBD50B200D9D355 /* Place.swift */; settings = {ASSET_TAGS = (); }; };
 		895E78171BBB8F3F006E50C8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 895E78161BBB8F3F006E50C8 /* Constants.swift */; settings = {ASSET_TAGS = (); }; };
 		895E781A1BBC17B7006E50C8 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 895E78181BBC17B7006E50C8 /* Alamofire.framework */; settings = {ASSET_TAGS = (); }; };
 		895E781B1BBC17B7006E50C8 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 895E78191BBC17B7006E50C8 /* SwiftyJSON.framework */; settings = {ASSET_TAGS = (); }; };
+		89B0C4371BBE583E00D32F36 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89B0C4361BBE583E00D32F36 /* FBSDKCoreKit.framework */; settings = {ASSET_TAGS = (); }; };
+		89B0C4391BBE589600D32F36 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89B0C4381BBE589600D32F36 /* FBSDKLoginKit.framework */; settings = {ASSET_TAGS = (); }; };
+		89B0C43B1BBE5A9000D32F36 /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89B0C43A1BBE5A8F00D32F36 /* GoogleMaps.framework */; settings = {ASSET_TAGS = (); }; };
+		89B0C43D1BBE5AEE00D32F36 /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 89B0C43C1BBE5AEE00D32F36 /* GoogleMaps.bundle */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,10 +92,7 @@
 		8906A2BE1BB8F7DF00828A5F /* libz.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.dylib; path = ../../../../usr/lib/libz.1.dylib; sourceTree = "<group>"; };
 		8906A2C11BB8F81800828A5F /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		8906A2C51BB9058600828A5F /* ParseFacebookUtilsV4.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseFacebookUtilsV4.framework; sourceTree = "<group>"; };
-		8906A2C91BB9063E00828A5F /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
-		8906A2CB1BB9066E00828A5F /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		8906A2CF1BB9084300828A5F /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
-		8906A2D11BB9440400828A5F /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
 		8906A2D31BB944EF00828A5F /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		8906A2D51BB9457D00828A5F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8906A2D71BB9458300828A5F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -107,12 +104,15 @@
 		8906A2E31BB9464600828A5F /* libc++.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.1.dylib"; path = "../../../../usr/lib/libc++.1.dylib"; sourceTree = "<group>"; };
 		8906A2E51BB9465700828A5F /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		8906A2E71BB9465B00828A5F /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
-		8906A2E91BB948AE00828A5F /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = "../../Downloads/installer/GoogleMaps-1.10.3/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle"; sourceTree = "<group>"; };
 		890701B61BBA42E6004FE503 /* MapTasks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapTasks.swift; sourceTree = "<group>"; };
 		89399F371BBD50B200D9D355 /* Place.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		895E78161BBB8F3F006E50C8 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		895E78181BBC17B7006E50C8 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		895E78191BBC17B7006E50C8 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
+		89B0C4361BBE583E00D32F36 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		89B0C4381BBE589600D32F36 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		89B0C43A1BBE5A8F00D32F36 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
+		89B0C43C1BBE5AEE00D32F36 /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GoogleMaps.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,15 +138,15 @@
 				8906A2B71BB8F6E600828A5F /* SystemConfiguration.framework in Frameworks */,
 				8906A2B51BB8F6E000828A5F /* StoreKit.framework in Frameworks */,
 				8906A2B31BB8F6DB00828A5F /* Security.framework in Frameworks */,
+				89B0C4391BBE589600D32F36 /* FBSDKLoginKit.framework in Frameworks */,
 				8906A2C21BB8F81800828A5F /* Parse.framework in Frameworks */,
 				8906A2AF1BB8F6CD00828A5F /* CoreLocation.framework in Frameworks */,
-				8906A2CA1BB9063E00828A5F /* FBSDKCoreKit.framework in Frameworks */,
 				8906A2AD1BB8F6C500828A5F /* CoreGraphics.framework in Frameworks */,
+				89B0C43B1BBE5A9000D32F36 /* GoogleMaps.framework in Frameworks */,
 				8906A2AB1BB8F6BD00828A5F /* CFNetwork.framework in Frameworks */,
 				8906A2A91BB8F6B700828A5F /* AudioToolbox.framework in Frameworks */,
-				8906A2CC1BB9066E00828A5F /* FBSDKLoginKit.framework in Frameworks */,
 				8906A2C61BB9058600828A5F /* ParseFacebookUtilsV4.framework in Frameworks */,
-				8906A2D21BB9440400828A5F /* GoogleMaps.framework in Frameworks */,
+				89B0C4371BBE583E00D32F36 /* FBSDKCoreKit.framework in Frameworks */,
 				8906A2D01BB9084300828A5F /* Bolts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -241,13 +241,13 @@
 				8906A2D91BB9458800828A5F /* CoreText.framework */,
 				8906A2D71BB9458300828A5F /* AVFoundation.framework */,
 				8906A2D51BB9457D00828A5F /* CoreData.framework */,
-				8906A2D11BB9440400828A5F /* GoogleMaps.framework */,
-				8906A2E91BB948AE00828A5F /* GoogleMaps.bundle */,
+				89B0C43A1BBE5A8F00D32F36 /* GoogleMaps.framework */,
+				89B0C43C1BBE5AEE00D32F36 /* GoogleMaps.bundle */,
 				8906A2CF1BB9084300828A5F /* Bolts.framework */,
-				8906A2CB1BB9066E00828A5F /* FBSDKLoginKit.framework */,
+				89B0C4361BBE583E00D32F36 /* FBSDKCoreKit.framework */,
+				89B0C4381BBE589600D32F36 /* FBSDKLoginKit.framework */,
 				8906A2C11BB8F81800828A5F /* Parse.framework */,
 				8906A2C51BB9058600828A5F /* ParseFacebookUtilsV4.framework */,
-				8906A2C91BB9063E00828A5F /* FBSDKCoreKit.framework */,
 				8906A2B61BB8F6E600828A5F /* SystemConfiguration.framework */,
 				8906A2B41BB8F6E000828A5F /* StoreKit.framework */,
 				8906A2B21BB8F6DB00828A5F /* Security.framework */,
@@ -367,7 +367,7 @@
 				8906A2851BB8F66800828A5F /* LaunchScreen.storyboard in Resources */,
 				8906A2821BB8F66800828A5F /* Assets.xcassets in Resources */,
 				8906A2801BB8F66800828A5F /* Main.storyboard in Resources */,
-				8906A2EA1BB948AE00828A5F /* GoogleMaps.bundle in Resources */,
+				89B0C43D1BBE5AEE00D32F36 /* GoogleMaps.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -490,6 +490,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -535,6 +536,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -557,6 +559,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -574,6 +577,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

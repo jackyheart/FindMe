@@ -107,7 +107,7 @@ class MapTasks: NSObject {
         })
     }
     
-    func getDirections(origin: String!, destination: String!, waypoints: Array<String>!, travelMode: TravelModes!, completionHandler: (success:Bool, routes:[String:AnyObject]?) -> Void) {
+    func getDirections(origin: CLLocationCoordinate2D, destination: String!, waypoints: Array<String>!, travelMode: TravelModes!, completionHandler: (success:Bool, routes:[String:AnyObject]?) -> Void) {
      
         var travelModeString = ""
         
@@ -126,7 +126,9 @@ class MapTasks: NSObject {
             travelModeString = "driving"
         }
         
-        Alamofire.request(.GET, baseURLDirections, parameters: ["origin":origin, "destination":destination, "mode":travelModeString], encoding: .URLEncodedInURL, headers: nil).response { (request, response, data, error) -> Void in
+        let originCoordinateString = "\(origin.latitude),\(origin.longitude)"
+        
+        Alamofire.request(.GET, baseURLDirections, parameters: ["origin":originCoordinateString, "destination":destination, "mode":travelModeString], encoding: .URLEncodedInURL, headers: nil).response { (request, response, data, error) -> Void in
             
             print("request:\(request)\n")
             print("response:\(response)\n")
