@@ -57,6 +57,73 @@
             </objects>
             <point key="canvasLocation" x="2548" y="555"/>
         </scene>
+        <!--Settings-->
+        <scene sceneID="veK-Rw-A2X">
+            <objects>
+                <viewController id="cBM-cz-jvU" customClass="SettingsViewController" customModule="FindMe" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="nuH-iH-er7"/>
+                        <viewControllerLayoutGuide type="bottom" id="N6Y-cD-wvd"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="3rO-BZ-M4B">
+                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ebb-cP-dwX">
+                                <rect key="frame" x="510" y="20" width="70" height="70"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="70" id="3nF-1u-gUq"/>
+                                    <constraint firstAttribute="height" constant="70" id="mqo-wg-dzg"/>
+                                </constraints>
+                            </imageView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="k9r-rN-SE0">
+                                <rect key="frame" x="20" y="102" width="560" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="ujl-g0-mha"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JiG-2m-2Cw">
+                                <rect key="frame" x="18" y="140" width="565" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="VN3-nD-PNq"/>
+                                </constraints>
+                                <state key="normal" title="Update"/>
+                                <connections>
+                                    <action selector="updateTapped:" destination="cBM-cz-jvU" eventType="touchUpInside" id="1KC-Mh-RhU"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Ebb-cP-dwX" firstAttribute="top" secondItem="nuH-iH-er7" secondAttribute="bottom" constant="20" id="4Om-L0-GB9"/>
+                            <constraint firstItem="JiG-2m-2Cw" firstAttribute="top" secondItem="k9r-rN-SE0" secondAttribute="bottom" constant="8" id="4xh-oU-aBc"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="k9r-rN-SE0" secondAttribute="leading" id="6D9-Kn-KMP"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="k9r-rN-SE0" secondAttribute="trailing" id="CcC-Zg-iVZ"/>
+                            <constraint firstItem="Ebb-cP-dwX" firstAttribute="leading" secondItem="3rO-BZ-M4B" secondAttribute="leadingMargin" constant="490" id="Idn-1f-e3e"/>
+                            <constraint firstItem="k9r-rN-SE0" firstAttribute="top" secondItem="Ebb-cP-dwX" secondAttribute="bottom" constant="12" id="KQn-Xq-TQI"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Ebb-cP-dwX" secondAttribute="trailing" id="PCT-i2-qfJ"/>
+                            <constraint firstItem="JiG-2m-2Cw" firstAttribute="leading" secondItem="3rO-BZ-M4B" secondAttribute="leadingMargin" constant="-2" id="cOQ-Ih-qHo"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="JiG-2m-2Cw" secondAttribute="trailing" constant="-3" id="caN-WA-tdW"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="Idn-1f-e3e"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <tabBarItem key="tabBarItem" title="Settings" id="nm2-Le-Esu"/>
+                    <connections>
+                        <outlet property="profileImgView" destination="Ebb-cP-dwX" id="kUy-70-HSG"/>
+                        <outlet property="usernameTF" destination="k9r-rN-SE0" id="4wu-Dx-2Ek"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fNA-9Y-WZF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2554" y="1289"/>
+        </scene>
         <!--Home-->
         <scene sceneID="Lxl-2g-NOx">
             <objects>
@@ -70,18 +137,24 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lJm-xj-YmA">
-                                <rect key="frame" x="26" y="23" width="425" height="30"/>
+                                <rect key="frame" x="20" y="23" width="560" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="rWx-5P-Tsm"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="search"/>
                                 <connections>
                                     <outlet property="delegate" destination="ens-G6-jrs" id="hHs-eQ-fuH"/>
                                 </connections>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R2G-Vp-OJz">
-                                <rect key="frame" x="451" y="23" width="120" height="30"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NWB-BJ-CMe" customClass="GMSMapView">
+                                <rect key="frame" x="20" y="63" width="560" height="339"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R2G-Vp-OJz">
+                                <rect key="frame" x="20" y="410" width="560" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="120" id="Khy-6W-ENS"/>
-                                    <constraint firstAttribute="height" constant="30" id="hRK-Dd-7zX"/>
+                                    <constraint firstAttribute="height" constant="30" id="FXM-Nk-JfX"/>
                                 </constraints>
                                 <state key="normal" title="Get Directions"/>
                                 <connections>
@@ -89,7 +162,10 @@
                                 </connections>
                             </button>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="4t7-kG-JXS">
-                                <rect key="frame" x="26" y="64" width="545" height="29"/>
+                                <rect key="frame" x="20" y="443" width="560" height="29"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="28" id="zVT-ry-P2J"/>
+                                </constraints>
                                 <segments>
                                     <segment title="Standard"/>
                                     <segment title="Earth"/>
@@ -99,43 +175,22 @@
                                     <action selector="segmentChanged:" destination="ens-G6-jrs" eventType="valueChanged" id="qWU-ei-RaF"/>
                                 </connections>
                             </segmentedControl>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NWB-BJ-CMe" customClass="GMSMapView">
-                                <rect key="frame" x="26" y="108" width="545" height="258"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="UcM-h2-kH3">
-                                <rect key="frame" x="26" y="391" width="545" height="29"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="28" id="DUS-aO-FUP"/>
-                                </constraints>
-                                <segments>
-                                    <segment title="Driving"/>
-                                    <segment title="Walking"/>
-                                    <segment title="Bicycling"/>
-                                    <segment title="Transit"/>
-                                </segments>
-                                <connections>
-                                    <action selector="changeTransitModes:" destination="ens-G6-jrs" eventType="valueChanged" id="3vx-qJ-OAH"/>
-                                </connections>
-                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="NWB-BJ-CMe" firstAttribute="top" secondItem="4t7-kG-JXS" secondAttribute="bottom" constant="16" id="3h3-ev-nRh"/>
-                            <constraint firstItem="UcM-h2-kH3" firstAttribute="leading" secondItem="KPg-dj-azG" secondAttribute="leadingMargin" constant="6" id="6Vg-n6-2pc"/>
                             <constraint firstItem="lJm-xj-YmA" firstAttribute="top" secondItem="6HS-EY-nTh" secondAttribute="bottom" constant="23" id="6g5-iT-J41"/>
-                            <constraint firstItem="4t7-kG-JXS" firstAttribute="top" secondItem="lJm-xj-YmA" secondAttribute="bottom" constant="11" id="Anx-N0-fyb"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="4t7-kG-JXS" secondAttribute="trailing" constant="9" id="INT-Cu-fci"/>
-                            <constraint firstItem="R2G-Vp-OJz" firstAttribute="leading" secondItem="lJm-xj-YmA" secondAttribute="trailing" id="Ljc-GA-dKp"/>
-                            <constraint firstItem="4t7-kG-JXS" firstAttribute="leading" secondItem="KPg-dj-azG" secondAttribute="leadingMargin" constant="6" id="Otu-VL-iwv"/>
-                            <constraint firstItem="R2G-Vp-OJz" firstAttribute="top" secondItem="6HS-EY-nTh" secondAttribute="bottom" constant="23" id="Q4J-cU-8xd"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="NWB-BJ-CMe" secondAttribute="trailing" constant="9" id="WIm-9i-WxK"/>
-                            <constraint firstItem="McY-fl-iZp" firstAttribute="top" secondItem="UcM-h2-kH3" secondAttribute="bottom" constant="68" id="ZDV-Rl-6rv"/>
-                            <constraint firstItem="lJm-xj-YmA" firstAttribute="leading" secondItem="KPg-dj-azG" secondAttribute="leadingMargin" constant="6" id="cIZ-sG-j96"/>
-                            <constraint firstItem="NWB-BJ-CMe" firstAttribute="leading" secondItem="KPg-dj-azG" secondAttribute="leadingMargin" constant="6" id="m1T-xK-YUr"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="R2G-Vp-OJz" secondAttribute="trailing" constant="9" id="sfp-zK-qhj"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="UcM-h2-kH3" secondAttribute="trailing" constant="9" id="vur-uQ-7re"/>
-                            <constraint firstItem="UcM-h2-kH3" firstAttribute="top" secondItem="NWB-BJ-CMe" secondAttribute="bottom" constant="25" id="xEJ-wA-fIh"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="4t7-kG-JXS" secondAttribute="trailing" id="B8f-uY-jNJ"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="lJm-xj-YmA" secondAttribute="trailing" id="JkW-35-glr"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="R2G-Vp-OJz" secondAttribute="trailing" id="P2E-Cu-mrh"/>
+                            <constraint firstItem="R2G-Vp-OJz" firstAttribute="top" secondItem="NWB-BJ-CMe" secondAttribute="bottom" constant="8" id="Scx-CE-Zds"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="NWB-BJ-CMe" secondAttribute="trailing" id="WIm-9i-WxK"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="R2G-Vp-OJz" secondAttribute="leading" id="X1K-kX-BRS"/>
+                            <constraint firstItem="lJm-xj-YmA" firstAttribute="leading" secondItem="KPg-dj-azG" secondAttribute="leadingMargin" id="cIZ-sG-j96"/>
+                            <constraint firstItem="McY-fl-iZp" firstAttribute="top" secondItem="NWB-BJ-CMe" secondAttribute="bottom" constant="85" id="cPL-Pd-ggo"/>
+                            <constraint firstItem="NWB-BJ-CMe" firstAttribute="top" secondItem="lJm-xj-YmA" secondAttribute="bottom" constant="10" id="gMV-g8-RKt"/>
+                            <constraint firstItem="NWB-BJ-CMe" firstAttribute="leading" secondItem="KPg-dj-azG" secondAttribute="leadingMargin" id="m1T-xK-YUr"/>
+                            <constraint firstItem="4t7-kG-JXS" firstAttribute="top" secondItem="R2G-Vp-OJz" secondAttribute="bottom" constant="3" id="r9Q-UG-JgX"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="4t7-kG-JXS" secondAttribute="leading" id="yae-eP-eql"/>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
@@ -161,6 +216,7 @@
                     <connections>
                         <segue destination="ens-G6-jrs" kind="relationship" relationship="viewControllers" id="gLK-n6-h3l"/>
                         <segue destination="kyS-HV-vvm" kind="relationship" relationship="viewControllers" id="Cyc-Ik-gZH"/>
+                        <segue destination="cBM-cz-jvU" kind="relationship" relationship="viewControllers" id="rCz-QJ-q6J"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z4o-q2-mqg" userLabel="First Responder" sceneMemberID="firstResponder"/>
