@@ -11,45 +11,46 @@ import Parse
 import ParseFacebookUtilsV4
 import Alamofire
 import FBSDKCoreKit
+import Firebase
 
 class ViewController: UIViewController {
+    
+    /*
+    //get friends
+    if ((FBSDKAccessToken.currentAccessToken()) != nil) {
+    
+        FBSDKGraphRequest(graphPath: "me/friends", parameters: ["fields": "id, name"]).startWithCompletionHandler({ (connection, result, error) -> Void in
+        
+            if error != nil {
+            
+                print("error: \(error)")
+            }
+            else {
+            
+                print("fetched user: \(result)\n")
+            }
+        })
+    }
+    */
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        if let _ = PFUser.currentUser() {
-        
-            print("User exist, proceed to next screen")
+        //observe auth
+        kFirebaseRef.observeAuthEventWithBlock { (authData) -> Void in
             
-            self.performSegueWithIdentifier("SegueMain", sender: self)
-            
-            //TODO: For testing purposes only... 
-            
-            /*
-            //get friends
-            if ((FBSDKAccessToken.currentAccessToken()) != nil) {
-            
-                FBSDKGraphRequest(graphPath: "me/friends", parameters: ["fields": "id, name"]).startWithCompletionHandler({ (connection, result, error) -> Void in
-                    
-                    if error != nil {
-                    
-                        print("error: \(error)")
-                    }
-                    else {
-                    
-                        print("fetched user: \(result)\n")
-                    }
-                })
+            if authData != nil {
+                
+                self.performSegueWithIdentifier("SegueMain", sender: self)
+                
+            } else {
+                
+                print("User not authenticated\n")
             }
-            */
-            
-        } else {
-        
-            print("User doesn't exist\n")
         }
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -57,143 +58,98 @@ class ViewController: UIViewController {
     
     @IBAction func loginWithFacebook(sender: AnyObject) {
         
-        //let currentUser = PFUser.currentUser()
+        //Firebase
+        let fbLoginManager = FBSDKLoginManager()
         
-        //if currentUser == nil {
-        
-            let permissions = ["user_friends"]
-            PFFacebookUtils.logInInBackgroundWithReadPermissions(permissions) {
-                (user: PFUser?, error: NSError?) -> Void in
-                if let user = user {
-                    if user.isNew {
-                        print("User signed up and logged in through Facebook!\n")
-                    } else {
-                        print("User logged in through Facebook!\n")
-                    }
+        //login
+        fbLoginManager.logInWithReadPermissions(["user_friends"], fromViewController: self) { (result, error) -> Void in
+            
+            if error != nil {
+                
+                print("fb error:\(error.localizedDescription)\n")
+                
+            } else if result.isCancelled {
+                
+                print("FB login cancelled\n")
+                
+            } else {
+                
+                let accessToken = FBSDKAccessToken.currentAccessToken().tokenString
+                
+                kFirebaseRef.authWithOAuthProvider("facebook", token: accessToken, withCompletionBlock: { (error, authData) -> Void in
                     
-                    if ((FBSDKAccessToken.currentAccessToken()) != nil) {
+                    if error != nil {
                         
-                        FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name, gender, birthday, email"]).startWithCompletionHandler({ (connection, result, error) -> Void in
-                            
-                            if error != nil {
-                                
-                                print("error: \(error)")
+                        print("login failed: \(error.localizedDescription)\n")
+                        
+                        Util.showAlertWithMessage(error.localizedDescription, onViewController: self)
+
+                        if let errorCode = FAuthenticationError(rawValue: error.code) {
+                            switch (errorCode) {
+                            case .UserDoesNotExist:
+                                print("Handle invalid user\n")
+                            case .InvalidEmail:
+                                print("Handle invalid email\n")
+                            case .InvalidPassword:
+                                print("Handle invalid password\n")
+                            default:
+                                print("Handle default situation\n")
                             }
-                            else {
-                                
-                                print("fetched user: \(result)\n")
-                                
-                                /*
-                                fetched user: {
-                                gender = male;
-                                id = 10153232677869541;
-                                name = "Jacky Coolheart";
-                                }
-                                */
-                                
-                                let curUser = PFUser.currentUser()!
-                                
-                                curUser["name"] = result["name"]
-                                curUser["facebookID"] = result["id"]
-                                
-                                if result["gender"] as! String == "male" {
-                                
-                                    curUser["gender"] = "1"
-                                
-                                } else {
-                                
-                                    curUser["gender"] = "0"
-                                }
-                                
-                                //save in Parse
-                                curUser.saveInBackgroundWithBlock({ (success, error) -> Void in
-                                    
-                                    if error != nil  {
-                                    
-                                        print("save failed, error:\(error)\n")
-                                    
-                                    } else {
-                                    
-                                        if success {
-                                        
-                                            print("User saved !\n")
-                                        }
-                                    }
-                                })
-                                
-                                //get profile picture
-                                let fbID = curUser["facebookID"]
-                                let profilePictureURL = NSURL(string: "https://graph.facebook.com/\(fbID)/picture?type=large")!
-                                
-                                Alamofire.request(.GET, profilePictureURL).response(completionHandler: { (request, response, data, errorType) -> Void in
-                                    
-                                    //print("imageData:\(data)\n")
-                                    
-                                    if let imageData = data {
-                                        
-                                        //Parse
-                                        let encodedImageString = imageData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
-                                        curUser["profileImage"] = encodedImageString
-                                        
-                                        //save in Parse
-                                        curUser.saveInBackgroundWithBlock({ (success, error) -> Void in
-                                            
-                                            if error != nil  {
+                        }
+
+                    } else {
                                                 
-                                                print("save profile picture failed, error:\(error)\n")
-                                                
-                                            } else {
-                                                
-                                                if success {
-                                                    
-                                                    print("User profile picture saved !\n")
-                                                }
-                                            }
-                                        })
-                                        
-                                        //UIView
-                                        let image = UIImage(data: imageData)
-                                        
-                                        let imageView = UIImageView(frame: CGRectMake(10.0, 50.0, 100.0, 100.0))
-                                        imageView.image = image
-                                        
-                                        self.view.addSubview(imageView)
-                                    }
-                                })
+                        print("logged in, authData: \(authData)\n")
+                        print("uid:\(authData.uid)\n")
+                        
+                        let gender = authData.providerData["cachedUserProfile"]!["gender"] as? NSString as? String
+                        let genderString = (gender == kStringMale) ? "1" : "0"
+                        
+                        let newUser = [
+                            "provider": authData.provider,
+                            "firstName": authData.providerData["cachedUserProfile"]!["first_name"] as? NSString as? String,
+                            "lastName": authData.providerData["cachedUserProfile"]!["last_name"] as? NSString as? String,
+                            "profileImageURL": authData.providerData["profileImageURL"] as? NSString as? String,
+                            "displayName": authData.providerData["displayName"] as? NSString as? String,//TODO: check this !
+                            "gender": genderString
+                        ]
+                        
+                        //save to Firebase
+                        let currentUser:Firebase = kFirebaseUserPath.childByAppendingPath(authData.uid)
+                        currentUser.setValue(newUser, withCompletionBlock: {
+                            (error:NSError?, ref:Firebase!) in
+                            if (error != nil) {
+                                print("New user Data could not be saved.\n")
+                            } else {
+                                print("New user Data saved successfully!\n")
                             }
                         })
-                    }
-                    
-                    /*
-                    PF_FBSession *fbSession = [PFFacebookUtils session];
-                    NSString *accessToken = [fbSession accessToken];
-                    self.imageData = [[NSMutableData alloc] init];
-                    NSURL *pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/me/picture?type=large&return_ssl_resources=1&access_token=%@", accessToken]];
-                    */
-                    
-                    /*
-                    NSURL *profilePictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large", [[PFUser currentUser] objectForKey:facebookId]]];
-                    NSURLRequest *profilePictureURLRequest = [NSURLRequest requestWithURL:profilePictureURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10.0f]; // Facebook profile picture cache policy: Expires in 2 weeks
-                    [NSURLConnection connectionWithRequest:profilePictureURLRequest delegate:self];
-                    */
-                    
-                    /*
-                    let fbID = PFUser.currentUser()!["facebookId"]
-                    let profilePictureURL = NSURL(string: "https://graph.facebook.com/\(fbID)/picture?type=large")!
-                    
-                    Alamofire.request(.GET, profilePictureURL).response(completionHandler: { (request, response, data, errorType) -> Void in
+
+                        //get profile picture
+                        let urlString = authData.providerData["profileImageURL"] as! String
+                        let profilePictureURL = NSURL(string: urlString)!
                         
-                        print("imageData:\(data)\n")
-                    })
-                    
-                    self.performSegueWithIdentifier("SegueMain", sender: self)
-                    */
-                    
-                } else {
-                    print("Uh oh. The user cancelled the Facebook login.\n")
-                }
-            }
-        //}
+                        Alamofire.request(.GET, profilePictureURL).response(completionHandler: { (request, response, data, errorType) -> Void in
+                            
+                            if let imageData = data {
+                                
+                                //Save encoded image to Firebase
+                                let encodedImageString = imageData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
+                                
+                                currentUser.updateChildValues(["encodedImageString":encodedImageString], withCompletionBlock: {
+                                    (error:NSError?, ref:Firebase!) in
+                                    if (error != nil) {
+                                        print("Image Data could not be saved to Firebase.\n")
+                                    } else {
+                                        print("Image Data saved successfully to Firebase!\n")
+                                    }
+                                })
+                            }
+                        })//end request
+                    }//else
+                })//end auth
+            }//end else
+        }//end login
     }
     
     //MARK: Segue
@@ -205,4 +161,3 @@ class ViewController: UIViewController {
         }
     }
 }
-

@@ -9,6 +9,7 @@
 import UIKit
 import GoogleMaps
 import Parse
+import Firebase
 
 enum TravelModes: Int {
     case Driving
@@ -17,25 +18,22 @@ enum TravelModes: Int {
     case Transit
 }
 
-class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
+class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var mapView: GMSMapView!
     @IBOutlet weak var searchTF: UITextField!
     
-    //basic
+    //maps
     let locationManager = CLLocationManager()
     let mapTasks = MapTasks()
-    var currentLocationMarker: GMSMarker!
-    var myCurrentCoordinate:CLLocationCoordinate2D = kCLLocationCoordinate2DInvalid
-
-    //directions
-    var markersArray: Array<GMSMarker> = []
-    var waypointsArray: Array<String> = []
+    var myLocationMarker: GMSMarker!
     
-    var originMarker: GMSMarker!
-    var destinationMarker: GMSMarker!
-    var routePolyline: GMSPolyline!
-    var travelMode = TravelModes.Driving
+    //Firebase
+    var currentUserRef:Firebase! = nil//reference to the current User Firebase path
+    var currentUserSnapshot:FDataSnapshot! = nil//snapshot of the current User
+    
+    //User
+    var myProfileImage:UIImage! = nil
     
     //places
     var placesClient:GMSPlacesClient!
@@ -46,36 +44,20 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
 
         // Do any additional setup after loading the view.
         
-        //location
+        //CLLocationManager
         self.locationManager.delegate = self
-        //self.locationManager.distanceFilter = kCLDistanceFilterNone//100 meters
+        self.locationManager.distanceFilter = 100.0//100 meters kCLDistanceFilterNone
         self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
         self.locationManager.requestWhenInUseAuthorization()
         
-        //map
-        //37.3319248,-122.0297007 (Apple, Cupertino)
-        
-        /*
-        let camera  = GMSCameraPosition.cameraWithLatitude(37.3319248, longitude: -122.0297007, zoom: 6)
-        
-        mapView.camera = camera
-        mapView.myLocationEnabled = true
-        mapView.settings.compassButton = true
-        
-        //marker
-        let marker = GMSMarker()
-        marker.position = CLLocationCoordinate2D(latitude: 37.3319248, longitude: -122.0297007)
-        marker.title = "Apple"
-        marker.snippet = "Cupertino"
-        marker.map = mapView
-        */
-        
-        //observe change
+        //Map View
         self.mapView.myLocationEnabled = true
+        self.mapView.settings.myLocationButton = true
         self.mapView.settings.compassButton = true
         self.mapView.addObserver(self, forKeyPath: "myLocation", options: NSKeyValueObservingOptions.New, context: nil)
         
-        //places
+        //Places
+        /*
         self.placesClient = GMSPlacesClient()
         
         self.placesClient.currentPlaceWithCallback { (likelihoodList, error) -> Void in
@@ -102,7 +84,10 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
                 }
             }
         }
+        */
         
+        /*
+        //Parse
         if let currentUser = PFUser.currentUser() {
         
             //profile picture
@@ -122,11 +107,87 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
             let name = currentUser["name"] as! String
             self.tabBarController?.navigationItem.title = name
         }
+        */
+        
+        //Firebase: observe auth
+        kFirebaseRef.observeAuthEventWithBlock { (authData) -> Void in
+            
+            if authData != nil {
+                
+                //Observe data changed on child nodes
+                kFirebaseUserPath.observeEventType(.ChildChanged, withBlock: { (snapshot) -> Void in
+                    
+                    if snapshot.value is NSNull {
+                        
+                        print("Users data is null")
+                        
+                    } else {
+                        
+                        print("Users list: \(snapshot.value)")
+                    }
+                })
+                
+                //Get current logged in User
+                self.currentUserRef = kFirebaseUserPath.childByAppendingPath(authData.uid)
+                
+                //Get current User data (read once)
+                self.currentUserRef.observeSingleEventOfType(.Value, withBlock: { (snapshot) -> Void in
+                    
+                    if snapshot.value is NSNull {
+                        
+                        print("User data is null")
+                        
+                    } else {
+                        
+                        //save reference to the snapshot
+                        self.currentUserSnapshot = snapshot
+
+                        //Get profile image
+                        let encodedImageString = snapshot.value["encodedImageString"] as! String
+                        
+                        let imageData = NSData(base64EncodedString: encodedImageString, options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)!
+                        let image = UIImage(data: imageData)!
+                        
+                        //save reference to the profile image
+                        self.myProfileImage = image
+                        
+                        //profile ImageView
+                        let profileImgView = UIImageView(frame: CGRectMake(100.0, 50.0, 40.0, 40.0))
+                        profileImgView.image = image
+                        Util.circleView(profileImgView)
+                        
+                        //right button item
+                        let barItem = UIBarButtonItem(customView: profileImgView)
+                        self.tabBarController?.navigationItem.rightBarButtonItem = barItem
+                        
+                        //title
+                        let name = snapshot.value["firstName"] as! String
+                        self.tabBarController?.navigationItem.title = name
+                    }
+                })
+                
+            } else {
+                
+                print("HomeViewController: User not authenticated\n")
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    //MARK: - GMSMapViewDelegate
+    
+    func mapView(mapView: GMSMapView!, didTapAtCoordinate coordinate: CLLocationCoordinate2D) {
+        
+         NSLog("You tapped at %f,%f", coordinate.latitude, coordinate.longitude)
+    }
+    
+    func mapView(mapView: GMSMapView!, idleAtCameraPosition position: GMSCameraPosition!) {
+        
+        print("idle at pos: \(position.target)")
     }
     
     //MARK: - CLLocationManagerDelegate
@@ -136,61 +197,71 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
         if status == CLAuthorizationStatus.AuthorizedWhenInUse {
         
             self.mapView.myLocationEnabled = true
+            self.mapView.settings.myLocationButton = true
             self.locationManager.startUpdatingLocation()
         }
     }
     
+    /*
     func locationManager(manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation) {
         
         print("oldLocation: \(oldLocation.coordinate)\n")
         print("newLocation: \(newLocation.coordinate)\n")
         
-        //self.mapView.camera = GMSCameraPosition.cameraWithTarget(newLocation.coordinate, zoom: 15.0)
+        self.mapView.camera = GMSCameraPosition(target: newLocation.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
+        
+        //self.locationManager.stopUpdatingLocation()
     }
+    */
     
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
         
         print("locationManager error: \(error)\n")
     }
     
-    //MARK: - KVO
+    //MARK: - GMS KVO
     
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         
-        //let myLocation = change![NSKeyValueChangeNewKey] as! CLLocation
-        //mapView.camera = GMSCameraPosition.cameraWithTarget(myLocation.coordinate, zoom: 10.0)
+        print("\nmyLocation: \(mapView.myLocation.coordinate)\n")
         
-        self.mapView.settings.myLocationButton = true
+        if let userRef = self.currentUserRef {
         
-        //print("\nmyLocation: \(mapView.myLocation.coordinate)\n")
-        //22.284681, 114.158177
-        
-        if !CLLocationCoordinate2DIsValid(self.myCurrentCoordinate) {
-        
-            //current location is invalid, set to the newly fetched location
-            self.myCurrentCoordinate = self.mapView.myLocation.coordinate
+            //save coordinate
+            let coordinate = ["latitude":self.mapView.myLocation.coordinate.latitude, "longitude":self.mapView.myLocation.coordinate.longitude]
+            userRef.updateChildValues(coordinate, withCompletionBlock: {
+                (error:NSError?, ref:Firebase!) in
+                if (error != nil) {
+                    print("coordinate data could not be saved to Firebase.\n")
+                } else {
+                    print("coordinate data saved successfully to Firebase!\n")
+                }
+            })
             
-            print("first current location: \(self.myCurrentCoordinate)\n")
+            //update marker
+            if let snapshot = self.currentUserSnapshot {
             
-        } else {
-            
-            let cllc2d1 = self.myCurrentCoordinate
-            let cllc2d2 = self.mapView.myLocation.coordinate
-            let epsilon = 0.01
-            
-            //print("latitude diff:\(cllc2d1.latitude - cllc2d2.latitude)\n")
-            //print("longitude diff:\(cllc2d1.longitude - cllc2d2.longitude)\n")
-            
-            if fabs(cllc2d1.latitude - cllc2d2.latitude) >= epsilon && fabs(cllc2d1.longitude - cllc2d2.longitude) >= epsilon {
+                let radius = self.myProfileImage.size.width * 0.5
+                let resizedImage = Util.resizeImageWithImage(self.myProfileImage, scaledToSize: CGSize(width: radius, height: radius))
                 
-                //assign to 'currentLocation' only if location is different
-                self.myCurrentCoordinate = self.mapView.myLocation.coordinate
+                self.myLocationMarker = GMSMarker(position: self.mapView.myLocation.coordinate)
+                self.myLocationMarker.icon = resizedImage
+                self.myLocationMarker.map = self.mapView
+                self.myLocationMarker.appearAnimation = kGMSMarkerAnimationPop
+                self.myLocationMarker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
                 
-                print("subsequent current location: \(self.myCurrentCoordinate)\n")
+                self.myLocationMarker.title = snapshot.value["firstName"] as! String
+                self.myLocationMarker.snippet = "Me"
             }
-        }//end else
+        
+        } else {
+        
+            print("current user ref is nil")
+        }
+
+        //self.mapView.camera = GMSCameraPosition(target: self.mapView.myLocation.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
     }
-    
+
     //MARK: - IBActions
     
     @IBAction func segmentChanged(sender: AnyObject) {
@@ -213,74 +284,39 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
     
     @IBAction func getDirections(sender: AnyObject) {
         
-        //createRoute(self)
-        
-        /*
-        if UIApplication.sharedApplication().canOpenURL(NSURL(string: "comgooglemaps://")!) {
-        
-            print("Google Maps app installed. Do something.\n")
-            
-            UIApplication.sharedApplication().openURL(NSURL(string:
-                "comgooglemaps://?center=40.765819,-73.975866&zoom=14&views=traffic")!)
-            
-        } else {
-        
-            self.showAlertWithMessage("No Google Maps app installed on this device.")
-        }
-        */
-        
-        let center = CLLocationCoordinate2DMake(37.788204, -122.411937)
-        let northEast = CLLocationCoordinate2DMake(center.latitude + 0.001, center.longitude + 0.001)
-        let southWest = CLLocationCoordinate2DMake(center.latitude - 0.001, center.longitude - 0.001)
-        let viewport = GMSCoordinateBounds(coordinate: northEast, coordinate: southWest)
-        let config = GMSPlacePickerConfig(viewport: viewport)
-        self.placePicker = GMSPlacePicker(config: config)
-        
-        self.placePicker?.pickPlaceWithCallback({ (place: GMSPlace?, error: NSError?) -> Void in
-            if let error = error {
-                print("Pick Place error: \(error.localizedDescription)\n")
-                return
-            }
-            
-            if let place = place {
-                let nameLabelText = place.name
-                let addressLabelText = place.formattedAddress.componentsSeparatedByString(", ").joinWithSeparator("\n")
-                print("\(nameLabelText) \(addressLabelText)\n")
-                
-            } else {
-                
-                let nameLabelText = "No place selected"
-                let addressLabelText = ""
-                
-                print("\(nameLabelText) \(addressLabelText)\n")
-            }
-        })
+        //TODO: For testing
     }
     
-    @IBAction func changeTransitModes(sender: AnyObject) {
+    //MARK: - Marker
     
-        let segment = sender as! UISegmentedControl
+    func placeLocationMarker(place: Place!) {
         
-        switch segment.selectedSegmentIndex {
-        
-        case TravelModes.Walking.rawValue:
-            self.travelMode = TravelModes.Walking
-            break
-            
-        case TravelModes.Bicycling.rawValue:
-            self.travelMode = TravelModes.Bicycling
-            break
-            
-        case TravelModes.Transit.rawValue:
-            self.travelMode = TravelModes.Transit
-            break
-            
-        default:
-            self.travelMode = TravelModes.Driving
-            break
+        if self.myLocationMarker != nil {
+            self.myLocationMarker.map = nil
         }
         
-        self.recreateRoute()
+        self.myLocationMarker = GMSMarker(position: place.coordinate)
+        self.myLocationMarker.map = mapView
+        self.myLocationMarker.appearAnimation = kGMSMarkerAnimationPop
+        self.myLocationMarker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
+        
+        self.myLocationMarker.title = place.name
+        self.myLocationMarker.snippet = place.formattedAddress
+        
+        if let currentUser = PFUser.currentUser() {
+            
+            //profile picture
+            let profileImageString = currentUser["profileImage"] as! String
+            let imageData = NSData(base64EncodedString: profileImageString, options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)!
+            let image = UIImage(data: imageData)!
+            
+            let radius = image.size.width * 0.5
+            let resizedImage = Util.resizeImageWithImage(image, scaledToSize: CGSize(width: radius, height: radius))
+            self.myLocationMarker.icon = resizedImage
+            
+            //title
+            self.myLocationMarker.title = currentUser["name"] as! String
+        }
     }
     
     //MARK: - Geocoding
@@ -293,7 +329,7 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
             
             if (!success) {
             
-                self.showAlertWithMessage("Error getting location.\n")
+                Util.showAlertWithMessage("Error getting location.", onViewController: self)
                 return
             }
             
@@ -302,7 +338,7 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
             
             if status == kGMAPSTATUS_ZERO_RESULTS {
                 
-                self.showAlertWithMessage("The location could not be found.")
+                Util.showAlertWithMessage("The location could not be found.", onViewController: self)
                 
             } else if status == kGMAPSTATUS_OK {
             
@@ -329,165 +365,11 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
             }
             else {
             
-                self.showAlertWithMessage("Unknown Google Map Errors.")
+                Util.showAlertWithMessage("Unknown Google Map Errors.", onViewController: self)
             }
         })
     }
-    
-    //MARK: - Helpers
-    
-    func showAlertWithMessage(message: String) {
-        
-        let appName = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleName") as! String
-        let alertController = UIAlertController(title: appName, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        
-        let closeAction = UIAlertAction(title: "Close", style: UIAlertActionStyle.Cancel) { (alertAction) -> Void in
-        }
-        
-        alertController.addAction(closeAction)
-        
-        presentViewController(alertController, animated: true, completion: nil)
-    }
-    
-    func placeLocationMarker(place: Place!) {
-        
-        if self.currentLocationMarker != nil {
-            self.currentLocationMarker.map = nil
-        }
-        
-        self.currentLocationMarker = GMSMarker(position: place.coordinate)
-        self.currentLocationMarker.map = mapView
-        self.currentLocationMarker.appearAnimation = kGMSMarkerAnimationPop
-        self.currentLocationMarker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
-        
-        self.currentLocationMarker.title = place.name
-        self.currentLocationMarker.snippet = place.formattedAddress
-    }
-    
-    //MARK: - Directions / Routing
-    
-    func createRoute(sender: AnyObject) {
-        
-        let origin = self.mapView.myLocation.coordinate
-        let destination = self.searchTF.text!
-        
-        self.mapTasks.getDirections(origin, destination: destination, waypoints: nil, travelMode: self.travelMode, completionHandler: { (success, dictionary) -> Void in
-            
-            self.searchTF.resignFirstResponder()
-            
-            if (!success) {
-                
-                self.showAlertWithMessage("Error calculating route.\n")
-                return
-            }
-            
-            let dictionary = dictionary!
-            let status = dictionary["status"] as! String
-            
-            if status == kGMAPSTATUS_OK {
-                
-                let selectedRoute = (dictionary["routes"] as! [[NSObject:AnyObject]])[0]
-                
-                //plot route
-                self.configureMapAndMarkersForRoute(selectedRoute)
-                self.drawRoute(selectedRoute)
-                self.displayRouteInfo(selectedRoute)
-                
-                //camera
-                let legs = selectedRoute["legs"] as! [[NSObject:AnyObject]]
-                let startLocationDictionary = legs[0]["start_location"] as! [NSObject:AnyObject]
-                let originCoordinate = CLLocationCoordinate2DMake(startLocationDictionary["lat"] as! Double, startLocationDictionary["lng"] as! Double)
-                
-                self.mapView.camera = GMSCameraPosition.cameraWithTarget(originCoordinate, zoom: 6.0)
-            }
-            else {
-                
-                self.showAlertWithMessage("No routes found !")
-            }
-        })
-    }
-    
-    func configureMapAndMarkersForRoute(routeDict:[NSObject:AnyObject]) {
-    
-        let legs = routeDict["legs"] as! Array<Dictionary<NSObject, AnyObject>>
-        
-        let startLocationDictionary = legs[0]["start_location"] as! [NSObject:AnyObject]
-        let originCoordinate = CLLocationCoordinate2DMake(startLocationDictionary["lat"] as! Double, startLocationDictionary["lng"] as! Double)
-        
-        let endLocationDictionary = legs[legs.count - 1]["end_location"] as! [NSObject:AnyObject]
-        let destinationCoordinate = CLLocationCoordinate2DMake(endLocationDictionary["lat"] as! Double, endLocationDictionary["lng"] as! Double)
-        
-        let originAddress = legs[0]["start_address"] as! String
-        let destinationAddress = legs[legs.count - 1]["end_address"] as! String
-        
-        let originMarker = GMSMarker(position: originCoordinate)
-        originMarker.map = self.mapView
-        originMarker.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
-        originMarker.title = originAddress
-        
-        let destinationMarker = GMSMarker(position: destinationCoordinate)
-        destinationMarker.map = self.mapView
-        destinationMarker.icon = GMSMarker.markerImageWithColor(UIColor.blueColor())
-        destinationMarker.title = destinationAddress
-    }
-    
-    func drawRoute(routeDict:[NSObject:AnyObject]) {
-        
-        let overviewPolyline = routeDict["overview_polyline"] as! [NSObject:AnyObject]
-        let route = overviewPolyline["points"] as! String
-        
-        let path: GMSPath = GMSPath(fromEncodedPath: route)
-        let routePolyline = GMSPolyline(path: path)
-        routePolyline.map = mapView
-    }
-    
-    func displayRouteInfo(routeDict:[NSObject:AnyObject]) {
-        
-        MapTasks.calculateTotalDistanceAndDuration(routeDict)
-    }
-    
-    func clearRoute() {
-        
-        originMarker.map = nil
-        destinationMarker.map = nil
-        routePolyline.map = nil
-        
-        originMarker = nil
-        destinationMarker = nil
-        routePolyline = nil
-        
-        if markersArray.count > 0 {
-            for marker in markersArray {
-                marker.map = nil
-            }
-            
-            markersArray.removeAll(keepCapacity: false)
-        }
-    }
-    
-    func recreateRoute() {
-        
-        if let _ = routePolyline {
-            clearRoute()
-            
-            /*
-            mapTasks.getDirections(mapTasks.originAddress, destination: mapTasks.destinationAddress, waypoints: waypointsArray, travelMode: nil, completionHandler: { (status, success) -> Void in
-                
-                
-                if success {
-                    self.configureMapAndMarkersForRoute()
-                    self.drawRoute()
-                    self.displayRouteInfo()
-                }
-                else {
-                    print(status)
-                }
-                
-            })
-            */
-        }
-    }
-    
+
     //MARK: - UITextFieldDelegate
     
     func textFieldDidBeginEditing(textField: UITextField) {
@@ -503,7 +385,7 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate, UITextFie
         
         if address?.characters.count == 0 {
         
-            self.showAlertWithMessage("Please enter a place name")
+            Util.showAlertWithMessage("Please enter a place name.", onViewController: self)
             
         } else {
         

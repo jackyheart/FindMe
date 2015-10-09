@@ -11,3 +11,5 @@ import Foundation
 let kGMAPAPIKEY = "AIzaSyDt-E4v2jNZnDZj6MbK-tvfZl1FOEn7Vcg"
 let kGMAPSTATUS_ZERO_RESULTS = "ZERO_RESULTS"
 let kGMAPSTATUS_OK = "OK"
+let kStringMale = "male"
+let kStringFemale = "female"
