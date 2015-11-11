@@ -25,15 +25,8 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
     
     //maps
     let locationManager = CLLocationManager()
-    let mapTasks = MapTasks()
+    let mapUtil = MapUtil()
     var myLocationMarker: GMSMarker!
-    
-    //Firebase
-    var currentUserRef:Firebase! = nil//reference to the current User Firebase path
-    var currentUserSnapshot:FDataSnapshot! = nil//snapshot of the current User
-    
-    //User
-    var myProfileImage:UIImage! = nil
     
     //places
     var placesClient:GMSPlacesClient!
@@ -108,69 +101,14 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
             self.tabBarController?.navigationItem.title = name
         }
         */
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
         
-        //Firebase: observe auth
-        kFirebaseRef.observeAuthEventWithBlock { (authData) -> Void in
-            
-            if authData != nil {
-                
-                //Observe data changed on child nodes
-                kFirebaseUserPath.observeEventType(.ChildChanged, withBlock: { (snapshot) -> Void in
-                    
-                    if snapshot.value is NSNull {
-                        
-                        print("Users data is null")
-                        
-                    } else {
-                        
-                        print("Users list: \(snapshot.value)")
-                    }
-                })
-                
-                //Get current logged in User
-                self.currentUserRef = kFirebaseUserPath.childByAppendingPath(authData.uid)
-                
-                //Get current User data (read once)
-                self.currentUserRef.observeSingleEventOfType(.Value, withBlock: { (snapshot) -> Void in
-                    
-                    if snapshot.value is NSNull {
-                        
-                        print("User data is null")
-                        
-                    } else {
-                        
-                        //save reference to the snapshot
-                        self.currentUserSnapshot = snapshot
-
-                        //Get profile image
-                        let encodedImageString = snapshot.value["encodedImageString"] as! String
-                        
-                        let imageData = NSData(base64EncodedString: encodedImageString, options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)!
-                        let image = UIImage(data: imageData)!
-                        
-                        //save reference to the profile image
-                        self.myProfileImage = image
-                        
-                        //profile ImageView
-                        let profileImgView = UIImageView(frame: CGRectMake(100.0, 50.0, 40.0, 40.0))
-                        profileImgView.image = image
-                        Util.circleView(profileImgView)
-                        
-                        //right button item
-                        let barItem = UIBarButtonItem(customView: profileImgView)
-                        self.tabBarController?.navigationItem.rightBarButtonItem = barItem
-                        
-                        //title
-                        let name = snapshot.value["firstName"] as! String
-                        self.tabBarController?.navigationItem.title = name
-                    }
-                })
-                
-            } else {
-                
-                print("HomeViewController: User not authenticated\n")
-            }
-        }
+        print("HomeVC viewWillDisappear")
+    
+        self.mapView.removeObserver(self, forKeyPath: "myLocation")
+        super.viewWillDisappear(animated)
     }
 
     override func didReceiveMemoryWarning() {
@@ -225,40 +163,35 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
         
         print("\nmyLocation: \(mapView.myLocation.coordinate)\n")
         
-        if let userRef = self.currentUserRef {
+        let currentUserRef = User.sharedInstance.userPathRef
+        let userSnapshot = User.sharedInstance.snapshot
         
-            //save coordinate
-            let coordinate = ["latitude":self.mapView.myLocation.coordinate.latitude, "longitude":self.mapView.myLocation.coordinate.longitude]
-            userRef.updateChildValues(coordinate, withCompletionBlock: {
-                (error:NSError?, ref:Firebase!) in
-                if (error != nil) {
-                    print("coordinate data could not be saved to Firebase.\n")
-                } else {
-                    print("coordinate data saved successfully to Firebase!\n")
-                }
-            })
-            
-            //update marker
-            if let snapshot = self.currentUserSnapshot {
-            
-                let radius = self.myProfileImage.size.width * 0.5
-                let resizedImage = Util.resizeImageWithImage(self.myProfileImage, scaledToSize: CGSize(width: radius, height: radius))
-                
-                self.myLocationMarker = GMSMarker(position: self.mapView.myLocation.coordinate)
-                self.myLocationMarker.icon = resizedImage
-                self.myLocationMarker.map = self.mapView
-                self.myLocationMarker.appearAnimation = kGMSMarkerAnimationPop
-                self.myLocationMarker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
-                
-                self.myLocationMarker.title = snapshot.value["firstName"] as! String
-                self.myLocationMarker.snippet = "Me"
-            }
-        
-        } else {
-        
-            print("current user ref is nil")
-        }
 
+        //save coordinate
+        let coordinate = ["latitude":self.mapView.myLocation.coordinate.latitude, "longitude":self.mapView.myLocation.coordinate.longitude]
+        currentUserRef.updateChildValues(coordinate, withCompletionBlock: {
+            (error:NSError?, ref:Firebase!) in
+            if (error != nil) {
+                print("coordinate data could not be saved to Firebase.\n")
+            } else {
+                print("coordinate data saved successfully to Firebase!\n")
+            }
+        })
+        
+        //update marker
+        let profileImage = User.sharedInstance.profileImage
+        let radius = profileImage.size.width * 0.5
+        let resizedImage = Util.resizeImageWithImage(profileImage, scaledToSize: CGSize(width: radius, height: radius))
+        
+        self.myLocationMarker = GMSMarker(position: self.mapView.myLocation.coordinate)
+        self.myLocationMarker.icon = resizedImage
+        self.myLocationMarker.map = self.mapView
+        self.myLocationMarker.appearAnimation = kGMSMarkerAnimationPop
+        self.myLocationMarker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
+        
+        self.myLocationMarker.title = userSnapshot.value["firstName"] as! String
+        self.myLocationMarker.snippet = "Me"
+        
         //self.mapView.camera = GMSCameraPosition(target: self.mapView.myLocation.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
     }
 
@@ -323,7 +256,7 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
     
     func findAddress(address: String) {
         
-        self.mapTasks.geocodeAddress(address, withCompletionHandler: { (success, results) -> Void in
+        self.mapUtil.geocodeAddress(address, withCompletionHandler: { (success, results) -> Void in
             
             self.searchTF.resignFirstResponder()
             

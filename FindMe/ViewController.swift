@@ -37,13 +37,54 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        //observe auth
+        //observe login
         kFirebaseRef.observeAuthEventWithBlock { (authData) -> Void in
             
             if authData != nil {
                 
-                self.performSegueWithIdentifier("SegueMain", sender: self)
+                //Get current logged in User
+                let currentUserRef = kFirebaseUserPath.childByAppendingPath(authData.uid)
+                User.sharedInstance.userPathRef = currentUserRef
                 
+                //Get current User data (read once)
+                currentUserRef.observeSingleEventOfType(.Value, withBlock: { (snapshot) -> Void in
+                    
+                    if snapshot.value is NSNull {
+                        
+                        print("User data is NULL")
+                        
+                    } else {
+                        
+                        //save reference to the snapshot
+                        User.sharedInstance.snapshot = snapshot
+                        
+                        /*
+                        //Get profile image
+                        let encodedImageString = snapshot.value["encodedImageString"] as! String
+                        let imageData = NSData(base64EncodedString: encodedImageString, options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)!
+                        
+                        //save reference to the profile image
+                        let image = UIImage(data: imageData)!
+                        User.sharedInstance.profileImage = image
+                        
+                        //profile ImageView
+                        let profileImgView = UIImageView(frame: CGRectMake(100.0, 50.0, 40.0, 40.0))
+                        profileImgView.image = image
+                        Util.circleView(profileImgView)
+                        
+                        //right button item
+                        let barItem = UIBarButtonItem(customView: profileImgView)
+                        self.tabBarController?.navigationItem.rightBarButtonItem = barItem
+                        */
+                        
+                        //navigation title
+                        let name = snapshot.value["firstName"] as! String
+                        self.tabBarController?.navigationItem.title = name
+                        
+                        //Segue
+                        self.performSegueWithIdentifier("SegueMain", sender: self)
+                    }
+                })
             } else {
                 
                 print("User not authenticated\n")
@@ -70,7 +111,7 @@ class ViewController: UIViewController {
                 
             } else if result.isCancelled {
                 
-                print("FB login cancelled\n")
+                print("fb login cancelled\n")
                 
             } else {
                 
@@ -135,6 +176,8 @@ class ViewController: UIViewController {
                                 
                                 //Save encoded image to Firebase
                                 let encodedImageString = imageData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
+                                
+                                print("Retrieved profile image data\n")
                                 
                                 currentUser.updateChildValues(["encodedImageString":encodedImageString], withCompletionBlock: {
                                     (error:NSError?, ref:Firebase!) in

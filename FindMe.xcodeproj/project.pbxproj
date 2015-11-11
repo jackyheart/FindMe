@@ -38,12 +38,13 @@
 		8906A2E41BB9464600828A5F /* libc++.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2E31BB9464600828A5F /* libc++.1.dylib */; };
 		8906A2E61BB9465700828A5F /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2E51BB9465700828A5F /* CoreBluetooth.framework */; };
 		8906A2E81BB9465B00828A5F /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8906A2E71BB9465B00828A5F /* Accelerate.framework */; };
-		890701B71BBA42E6004FE503 /* MapTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890701B61BBA42E6004FE503 /* MapTasks.swift */; settings = {ASSET_TAGS = (); }; };
+		890701B71BBA42E6004FE503 /* MapUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890701B61BBA42E6004FE503 /* MapUtil.swift */; settings = {ASSET_TAGS = (); }; };
 		89399F381BBD50B200D9D355 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89399F371BBD50B200D9D355 /* Place.swift */; settings = {ASSET_TAGS = (); }; };
 		895E78171BBB8F3F006E50C8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 895E78161BBB8F3F006E50C8 /* Constants.swift */; settings = {ASSET_TAGS = (); }; };
 		895E781A1BBC17B7006E50C8 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 895E78181BBC17B7006E50C8 /* Alamofire.framework */; settings = {ASSET_TAGS = (); }; };
 		895E781B1BBC17B7006E50C8 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 895E78191BBC17B7006E50C8 /* SwiftyJSON.framework */; settings = {ASSET_TAGS = (); }; };
 		8985F9601BC36F1600B5F825 /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8985F95F1BC36F1600B5F825 /* Firebase.framework */; settings = {ASSET_TAGS = (); }; };
+		89A15C261BF38AFD00EC02A0 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A15C251BF38AFD00EC02A0 /* User.swift */; settings = {ASSET_TAGS = (); }; };
 		89B0C4371BBE583E00D32F36 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89B0C4361BBE583E00D32F36 /* FBSDKCoreKit.framework */; settings = {ASSET_TAGS = (); }; };
 		89B0C4391BBE589600D32F36 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89B0C4381BBE589600D32F36 /* FBSDKLoginKit.framework */; settings = {ASSET_TAGS = (); }; };
 		89B0C43B1BBE5A9000D32F36 /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89B0C43A1BBE5A8F00D32F36 /* GoogleMaps.framework */; settings = {ASSET_TAGS = (); }; };
@@ -109,12 +110,13 @@
 		8906A2E31BB9464600828A5F /* libc++.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.1.dylib"; path = "../../../../usr/lib/libc++.1.dylib"; sourceTree = "<group>"; };
 		8906A2E51BB9465700828A5F /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		8906A2E71BB9465B00828A5F /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
-		890701B61BBA42E6004FE503 /* MapTasks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapTasks.swift; sourceTree = "<group>"; };
+		890701B61BBA42E6004FE503 /* MapUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapUtil.swift; sourceTree = "<group>"; };
 		89399F371BBD50B200D9D355 /* Place.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		895E78161BBB8F3F006E50C8 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		895E78181BBC17B7006E50C8 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		895E78191BBC17B7006E50C8 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 		8985F95F1BC36F1600B5F825 /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Firebase.framework; sourceTree = "<group>"; };
+		89A15C251BF38AFD00EC02A0 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		89B0C4361BBE583E00D32F36 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		89B0C4381BBE589600D32F36 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		89B0C43A1BBE5A8F00D32F36 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
@@ -207,8 +209,9 @@
 				8906A27C1BB8F66800828A5F /* ViewController.swift */,
 				8906A2D31BB944EF00828A5F /* HomeViewController.swift */,
 				89E3E5541BC225AE00BFA8CB /* SettingsViewController.swift */,
-				890701B61BBA42E6004FE503 /* MapTasks.swift */,
+				89A15C251BF38AFD00EC02A0 /* User.swift */,
 				89399F371BBD50B200D9D355 /* Place.swift */,
+				890701B61BBA42E6004FE503 /* MapUtil.swift */,
 				89E3E5521BC21A9F00BFA8CB /* Util.swift */,
 				895E78161BBB8F3F006E50C8 /* Constants.swift */,
 				89FB59381BC4B5E3000F97AE /* FirebaseConfig.swift */,
@@ -429,13 +432,14 @@
 				895E78171BBB8F3F006E50C8 /* Constants.swift in Sources */,
 				8906A27D1BB8F66800828A5F /* ViewController.swift in Sources */,
 				89FB593D1BC4F873000F97AE /* FirebaseManager.swift in Sources */,
-				890701B71BBA42E6004FE503 /* MapTasks.swift in Sources */,
+				890701B71BBA42E6004FE503 /* MapUtil.swift in Sources */,
 				89399F381BBD50B200D9D355 /* Place.swift in Sources */,
 				89E3E5531BC21A9F00BFA8CB /* Util.swift in Sources */,
 				8906A27B1BB8F66800828A5F /* AppDelegate.swift in Sources */,
 				89FB59391BC4B5E3000F97AE /* FirebaseConfig.swift in Sources */,
 				8906A2D41BB944EF00828A5F /* HomeViewController.swift in Sources */,
 				89E3E5551BC225AE00BFA8CB /* SettingsViewController.swift in Sources */,
+				89A15C261BF38AFD00EC02A0 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

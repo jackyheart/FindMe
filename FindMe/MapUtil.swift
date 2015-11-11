@@ -1,5 +1,5 @@
 //
-//  MapTasks.swift
+//  MapUtil.swift
 //  FindMe
 //
 //  Created by Jacky Tjoa on 29/9/15.
@@ -11,7 +11,7 @@ import CoreLocation
 import Alamofire
 import SwiftyJSON
 
-class MapTasks: NSObject {
+class MapUtil: NSObject {
 
     let baseURLGeocode = "https://maps.googleapis.com/maps/api/geocode/json"
     var lookupAddressResults: Dictionary<NSObject, AnyObject>!
