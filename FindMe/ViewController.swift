@@ -15,24 +15,6 @@ import Firebase
 
 class ViewController: UIViewController {
     
-    /*
-    //get friends
-    if ((FBSDKAccessToken.currentAccessToken()) != nil) {
-    
-        FBSDKGraphRequest(graphPath: "me/friends", parameters: ["fields": "id, name"]).startWithCompletionHandler({ (connection, result, error) -> Void in
-        
-            if error != nil {
-            
-                print("error: \(error)")
-            }
-            else {
-            
-                print("fetched user: \(result)\n")
-            }
-        })
-    }
-    */
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -46,8 +28,10 @@ class ViewController: UIViewController {
                 let currentUserRef = kFirebaseUserPath.childByAppendingPath(authData.uid)
                 User.sharedInstance.userPathRef = currentUserRef
                 
-                //Get current User data (read once)
-                currentUserRef.observeSingleEventOfType(.Value, withBlock: { (snapshot) -> Void in
+                //Get current User data
+                currentUserRef.observeEventType(.Value, withBlock: { (snapshot) -> Void in
+                    
+                    print("child Value snapshot:\n\(snapshot)\n")
                     
                     if snapshot.value is NSNull {
                         
@@ -58,33 +42,41 @@ class ViewController: UIViewController {
                         //save reference to the snapshot
                         User.sharedInstance.snapshot = snapshot
                         
-                        /*
-                        //Get profile image
-                        let encodedImageString = snapshot.value["encodedImageString"] as! String
-                        let imageData = NSData(base64EncodedString: encodedImageString, options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)!
+                        if let encodedImageString = snapshot.value["encodedImageString"]! {
                         
-                        //save reference to the profile image
-                        let image = UIImage(data: imageData)!
-                        User.sharedInstance.profileImage = image
-                        
-                        //profile ImageView
-                        let profileImgView = UIImageView(frame: CGRectMake(100.0, 50.0, 40.0, 40.0))
-                        profileImgView.image = image
-                        Util.circleView(profileImgView)
-                        
-                        //right button item
-                        let barItem = UIBarButtonItem(customView: profileImgView)
-                        self.tabBarController?.navigationItem.rightBarButtonItem = barItem
-                        */
+                            //Get profile image
+                            let encodedImageString = encodedImageString as! String
+                            let imageData = NSData(base64EncodedString: encodedImageString, options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)!
+                            
+                            //save reference to the profile image
+                            let image = UIImage(data: imageData)!
+                            User.sharedInstance.profileImage = image
+                            
+                            //profile ImageView
+                            let profileImgView = UIImageView(frame: CGRectMake(100.0, 50.0, 40.0, 40.0))
+                            profileImgView.image = image
+                            Util.circleView(profileImgView)
+                            
+                            //right button item
+                            let barItem = UIBarButtonItem(customView: profileImgView)
+                            self.tabBarController?.navigationItem.rightBarButtonItem = barItem
+                        }
                         
                         //navigation title
                         let name = snapshot.value["firstName"] as! String
                         self.tabBarController?.navigationItem.title = name
-                        
-                        //Segue
-                        self.performSegueWithIdentifier("SegueMain", sender: self)
                     }
                 })
+                
+                //observe change
+                currentUserRef.observeEventType(.ChildChanged, withBlock: { (snapshot) -> Void in
+                    
+                    print("child changed snapshot:\n\(snapshot)\n")
+                })
+                
+                //Segue
+                self.performSegueWithIdentifier("SegueMain", sender: self)
+                
             } else {
                 
                 print("User not authenticated\n")

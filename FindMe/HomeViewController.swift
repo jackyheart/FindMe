@@ -11,13 +11,6 @@ import GoogleMaps
 import Parse
 import Firebase
 
-enum TravelModes: Int {
-    case Driving
-    case Walking
-    case Bicycling
-    case Transit
-}
-
 class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var mapView: GMSMapView!
@@ -48,59 +41,6 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
         self.mapView.settings.myLocationButton = true
         self.mapView.settings.compassButton = true
         self.mapView.addObserver(self, forKeyPath: "myLocation", options: NSKeyValueObservingOptions.New, context: nil)
-        
-        //Places
-        /*
-        self.placesClient = GMSPlacesClient()
-        
-        self.placesClient.currentPlaceWithCallback { (likelihoodList, error) -> Void in
-            
-            if let error = error {
-                print("Pick Place error: \(error.localizedDescription)\n")
-                return
-            }
-            
-            if let placeLikelihoodList = likelihoodList {
-            
-                let gmsPlace = placeLikelihoodList.likelihoods.first?.place
-                
-                if let gmsPlace = gmsPlace {
-                
-                    let place = Place(coordinate: gmsPlace.coordinate)
-                    place.name = gmsPlace.name
-                    place.formattedAddress = gmsPlace.formattedAddress
-                    
-                    print("gmsPlace: \(gmsPlace)\n")
-                    
-                    self.mapView.camera = GMSCameraPosition.cameraWithTarget(gmsPlace.coordinate, zoom: 12.0)
-                    self.placeLocationMarker(place)
-                }
-            }
-        }
-        */
-        
-        /*
-        //Parse
-        if let currentUser = PFUser.currentUser() {
-        
-            //profile picture
-            let profileImageString = currentUser["profileImage"] as! String
-            let imageData = NSData(base64EncodedString: profileImageString, options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)!
-            
-            let image = UIImage(data: imageData)
-            
-            let profileImgView = UIImageView(frame: CGRectMake(100.0, 50.0, 40.0, 40.0))
-            profileImgView.image = image
-            Util.circleView(profileImgView)
-            
-            let barItem = UIBarButtonItem(customView: profileImgView)
-            self.tabBarController?.navigationItem.rightBarButtonItem = barItem
-            
-            //name
-            let name = currentUser["name"] as! String
-            self.tabBarController?.navigationItem.title = name
-        }
-        */
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -166,8 +106,7 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
         let currentUserRef = User.sharedInstance.userPathRef
         let userSnapshot = User.sharedInstance.snapshot
         
-
-        //save coordinate
+        //Save coordinate
         let coordinate = ["latitude":self.mapView.myLocation.coordinate.latitude, "longitude":self.mapView.myLocation.coordinate.longitude]
         currentUserRef.updateChildValues(coordinate, withCompletionBlock: {
             (error:NSError?, ref:Firebase!) in
@@ -178,7 +117,7 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
             }
         })
         
-        //update marker
+        //Update marker
         let profileImage = User.sharedInstance.profileImage
         let radius = profileImage.size.width * 0.5
         let resizedImage = Util.resizeImageWithImage(profileImage, scaledToSize: CGSize(width: radius, height: radius))
@@ -236,6 +175,7 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
         self.myLocationMarker.title = place.name
         self.myLocationMarker.snippet = place.formattedAddress
         
+        /*
         if let currentUser = PFUser.currentUser() {
             
             //profile picture
@@ -250,6 +190,7 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
             //title
             self.myLocationMarker.title = currentUser["name"] as! String
         }
+        */
     }
     
     //MARK: - Geocoding

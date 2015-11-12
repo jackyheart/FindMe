@@ -7,11 +7,11 @@
 //
 
 import UIKit
-import Parse
 import Bolts
 import FBSDKCoreKit
 import ParseFacebookUtilsV4
 import GoogleMaps
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -21,9 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization a fter application launch.
         
-        Parse.setApplicationId("Da2QJsBAvuj3VSA7i1TjqexAh9nBYy7Nk0mLhZPN",
-            clientKey: "NEZbattKyixHTawxTmZYTobCurZfI2BUlODUBdLJ")
-        PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
+        //Firebase
+        Firebase.defaultConfig().persistenceEnabled = true
         
         //Facebook
         PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)

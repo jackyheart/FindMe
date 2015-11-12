@@ -111,6 +111,17 @@
                                     <action selector="updateTapped:" destination="cBM-cz-jvU" eventType="touchUpInside" id="1KC-Mh-RhU"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oWB-GU-lWK">
+                                <rect key="frame" x="18" y="431" width="562" height="30"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="b7c-LR-c6n"/>
+                                </constraints>
+                                <state key="normal" title="Logout"/>
+                                <connections>
+                                    <action selector="logout:" destination="cBM-cz-jvU" eventType="touchUpInside" id="bFY-hL-QSM"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -121,9 +132,12 @@
                             <constraint firstAttribute="trailingMargin" secondItem="k9r-rN-SE0" secondAttribute="trailing" id="CcC-Zg-iVZ"/>
                             <constraint firstItem="Ebb-cP-dwX" firstAttribute="leading" secondItem="3rO-BZ-M4B" secondAttribute="leadingMargin" constant="490" id="Idn-1f-e3e"/>
                             <constraint firstItem="k9r-rN-SE0" firstAttribute="top" secondItem="Ebb-cP-dwX" secondAttribute="bottom" constant="12" id="KQn-Xq-TQI"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="oWB-GU-lWK" secondAttribute="trailing" id="OVy-fi-0sz"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Ebb-cP-dwX" secondAttribute="trailing" id="PCT-i2-qfJ"/>
                             <constraint firstItem="JiG-2m-2Cw" firstAttribute="leading" secondItem="3rO-BZ-M4B" secondAttribute="leadingMargin" constant="-2" id="cOQ-Ih-qHo"/>
                             <constraint firstAttribute="trailingMargin" secondItem="JiG-2m-2Cw" secondAttribute="trailing" constant="-3" id="caN-WA-tdW"/>
+                            <constraint firstItem="oWB-GU-lWK" firstAttribute="leading" secondItem="3rO-BZ-M4B" secondAttribute="leadingMargin" constant="-2" id="laj-E4-F5j"/>
+                            <constraint firstItem="N6Y-cD-wvd" firstAttribute="top" secondItem="oWB-GU-lWK" secondAttribute="bottom" constant="26" id="pgd-RX-taG"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">

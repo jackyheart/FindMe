@@ -74,6 +74,12 @@ class SettingsViewController: UIViewController {
         }
     }
 
+    @IBAction func logout(sender: AnyObject) {
+        
+        kFirebaseRef.unauth()
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
     /*
     // MARK: - Navigation
 

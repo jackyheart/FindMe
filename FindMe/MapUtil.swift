@@ -11,6 +11,13 @@ import CoreLocation
 import Alamofire
 import SwiftyJSON
 
+enum TravelModes: Int {
+    case Driving
+    case Walking
+    case Bicycling
+    case Transit
+}
+
 class MapUtil: NSObject {
 
     let baseURLGeocode = "https://maps.googleapis.com/maps/api/geocode/json"
