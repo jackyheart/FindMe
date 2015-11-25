@@ -8,13 +8,38 @@
 
 import UIKit
 import Firebase
+import CoreLocation
+import GoogleMaps
 
 class User: NSObject {
 
-    static let sharedInstance = User() //singleton
+    //static let sharedInstance = User() //singleton
+    var id:String!
     var userPathRef:Firebase!
-    var snapshot:FDataSnapshot!
     var profileImage:UIImage!
     
-    private override init() {}
+    var firstName:String! = ""
+    var lastName:String! = ""
+    var location:CLLocationCoordinate2D!
+    var gender:Int! = 1
+    
+    //Google Map
+    var marker:GMSMarker! = nil
+    
+    /*
+    firstName = Jacky;
+    gender = 1;
+    lastName = Coolheart;
+    latitude = "1.303553811781307";
+    longitude = "103.7972148923184";
+    profileImageURL = "https://scontent.xx.fbcdn.net/hprofile-ash2/v/t1.0-1/
+    displayName = "Jacky Coolheart";
+    encodedImageString = "xxx"
+    */
+    
+    init(userID:String) {
+        super.init()
+        
+        self.id = userID
+    }
 }
