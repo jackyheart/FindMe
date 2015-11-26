@@ -39,7 +39,7 @@ class FirebaseManager: NSObject {
                 self.currentUser.userPathRef = currentUserRef
                 
                 //Observe event of current User
-                currentUserRef.observeEventType(.Value, withBlock: { (snapshot) -> Void in
+                currentUserRef.observeSingleEventOfType(.Value, withBlock: { (snapshot) -> Void in
                     
                     //print("\nuserRef .Value snapshot:\n\(snapshot)\n")
                     print("\nuserRef .Value updated\n")
@@ -70,11 +70,13 @@ class FirebaseManager: NSObject {
                     }
                 })
                 
+                /*
                 //observe change
                 currentUserRef.observeEventType(.ChildChanged, withBlock: { (snapshot) -> Void in
                     
                     print("userRef .ChildChanged snapshot:\n\(snapshot)\n")
                 })
+                */
             }
             else {
             
@@ -112,6 +114,8 @@ class FirebaseManager: NSObject {
                 
             } else {
                 
+                isAuthenticatedAndSaved = true //update status
+                
                 print("\n(fb) login success, authData: \n\(authData)\n")
                 print("(fb) uid:\(authData.uid)\n")
                 
@@ -139,7 +143,6 @@ class FirebaseManager: NSObject {
                         print("New user Data could not be saved.\n")
                     } else {
                         
-                        isAuthenticatedAndSaved = true //update status
                         print("New user Data saved successfully!\n")
                     }
                 })

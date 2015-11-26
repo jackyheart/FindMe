@@ -45,6 +45,7 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
         self.locationManager.requestWhenInUseAuthorization()
         
         //Map View
+        self.mapView.delegate = self
         self.mapView.myLocationEnabled = true
         self.mapView.settings.myLocationButton = true
         self.mapView.settings.compassButton = true
@@ -58,21 +59,41 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
             self.currentUser = FirebaseManager.sharedInstance.currentUser
         })
         
-        /*
+        currentUserRef.observeSingleEventOfType(.Value, withBlock: { (snapshot) -> Void in
+            
+            //Right profile icon
+            if self.currentUser.profileImage != nil {
+                
+                let profileImgView = UIImageView(frame: CGRectMake(100.0, 50.0, 40.0, 40.0))
+                profileImgView.image = self.currentUser.profileImage
+                Util.circleView(profileImgView)
+                
+                //right button item
+                if self.tabBarController?.navigationItem.rightBarButtonItem == nil {
+                    let barItem = UIBarButtonItem(customView: profileImgView)
+                    self.tabBarController?.navigationItem.rightBarButtonItem = barItem
+                }
+            }
+            
+            //navigation title
+            self.tabBarController?.navigationItem.title = "\(self.currentUser.firstName) \(self.currentUser.lastName)"
+        })
+        
+        
         currentUserRef.observeEventType(.ChildChanged, withBlock: { (snapshot) -> Void in
             
             print("(HomeVC) ChildChanged, snapshot:\(snapshot)")
         })
-        */
         
+        /*
         //Observe change on all Users (global)
         kFirebaseUserPath.observeEventType(.ChildChanged, withBlock: { (snapshot) -> Void in
         
             //print("(HomeVC snapshot global .ChildChanged): \(snapshot)")
             
-            print("snapshot children count: \(snapshot.childrenCount)") // I got the expected number of items
-            print("snapshot children value: \(snapshot.value)") // I got the expected number of items
-            print("display name: \(snapshot.value["displayName"])")
+            print("(global) snapshot children count: \(snapshot.childrenCount)") // I got the expected number of items
+            print("(global) snapshot children value: \(snapshot.value)") // I got the expected number of items
+            print("(global) display name: \(snapshot.value["displayName"])")
             
             
             //Right profile icon
@@ -124,6 +145,7 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
             }
             */
         })
+        */
 
         /*
         //observe change on current user
@@ -167,6 +189,10 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
         */
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
     override func viewWillDisappear(animated: Bool) {
         
         print("HomeVC viewWillDisappear")
@@ -182,14 +208,46 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
     
     //MARK: - GMSMapViewDelegate
     
-    func mapView(mapView: GMSMapView!, didTapAtCoordinate coordinate: CLLocationCoordinate2D) {
+    func mapView(mapView: GMSMapView!, willMove gesture: Bool) {
         
-         NSLog("You tapped at %f,%f", coordinate.latitude, coordinate.longitude)
+        print("mapView willMove")
+    }
+    
+    func mapView(mapView: GMSMapView!, didChangeCameraPosition position: GMSCameraPosition!) {
+        
+        print("didChangeCameraPosition")
     }
     
     func mapView(mapView: GMSMapView!, idleAtCameraPosition position: GMSCameraPosition!) {
         
         print("idle at pos: \(position.target)")
+    }
+    
+    func mapView(mapView: GMSMapView!, didTapAtCoordinate coordinate: CLLocationCoordinate2D) {
+        
+        print("didTapAtCoordinate: \(coordinate.latitude), \(coordinate.longitude)")
+    }
+    
+    func mapView(mapView: GMSMapView!, didLongPressAtCoordinate coordinate: CLLocationCoordinate2D) {
+       
+        print("didLongPressAtCoordinate")
+    }
+    
+    func mapView(mapView: GMSMapView!, didTapMarker marker: GMSMarker!) -> Bool {
+        
+        print("didTapMarker")
+        
+        return true
+    }
+    
+    func didTapMyLocationButtonForMapView(mapView: GMSMapView!) -> Bool {
+        
+        print("didTapMyLocationButtonForMapView")
+        
+        let cameraPosition = GMSCameraPosition(target: self.mapView.myLocation.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
+        self.mapView.animateToCameraPosition(cameraPosition)
+        
+        return true
     }
     
     //MARK: - CLLocationManagerDelegate
@@ -225,7 +283,7 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
     
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         
-        print("\nmyLocation: \(mapView.myLocation.coordinate)\n")
+        //print("\nmyLocation: \(mapView.myLocation.coordinate)\n")
         
         //User ref
         let currentUserRef = FirebaseManager.sharedInstance.currentUser.userPathRef
@@ -241,19 +299,19 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
                 print("coordinate data saved successfully to Firebase!\n")
             }
         })
-        
+    
         //Update marker
         if self.currentUser != nil {
             
-            //let profileImage = self.currentUser.profileImage
-            //let radius = profileImage.size.width * 0.5
-            //let resizedImage = Util.resizeImageWithImage(profileImage, scaledToSize: CGSize(width: radius, height: radius))
+            let profileImage = self.currentUser.profileImage
+            let radius = profileImage.size.width * 0.5
+            let resizedImage = Util.resizeImageWithImage(profileImage, scaledToSize: CGSize(width: radius, height: radius))
 
             if self.currentUser.marker == nil {
+            
                 let marker = GMSMarker(position: self.mapView.myLocation.coordinate)
-                marker.icon = UIImage(named: "profile")
+                marker.icon = resizedImage
                 marker.appearAnimation = kGMSMarkerAnimationPop
-                marker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
                 marker.title = "\(self.currentUser.firstName) \(self.currentUser.lastName)"
                 marker.snippet = "Me"
                 marker.map = self.mapView
@@ -261,7 +319,7 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
             }
         }
     
-        self.mapView.camera = GMSCameraPosition(target: self.mapView.myLocation.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
+        //self.mapView.camera = GMSCameraPosition(target: self.mapView.myLocation.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
     }
 
     //MARK: - IBActions

@@ -63,7 +63,9 @@ class ViewController: UIViewController {
                     
                     if !authenticated {
                     
-                        Util.showAlertWithMessage(error.localizedDescription, onViewController: self)
+                        if error != nil {
+                            Util.showAlertWithMessage(error.localizedDescription, onViewController: self)
+                        }
                     }
                 })
                 

@@ -347,7 +347,6 @@
 				TargetAttributes = {
 					8906A2761BB8F66800828A5F = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = K63E82JPAC;
 					};
 					8906A28A1BB8F66800828A5F = {
 						CreatedOnToolsVersion = 7.0;
