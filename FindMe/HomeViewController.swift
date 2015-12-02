@@ -54,10 +54,9 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
         self.mapView.settings.compassButton = true
         self.mapView.addObserver(self, forKeyPath: "myLocation", options: NSKeyValueObservingOptions.New, context: nil)
         
-        //TODO: is this needed ?
         self.currentUser = FirebaseManager.sharedInstance.currentUser
         let currentUserRef = self.currentUser.ref
-
+        
         //Observe single change on current User
         currentUserRef.observeSingleEventOfType(.Value, withBlock: { (snapshot) -> Void in
             
@@ -100,15 +99,13 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
                 let val = child.value
                 
                 if self.currentUser.ref.key == child.ref.key {
+                    
                     //ignore current User
                     continue
                 }
 
                 //Add other Users to array
-                let user = User(ref: child.ref)
-                user.firstName = val["firstName"] as! String
-                user.lastName = val["lastName"] as! String
-                user.gender = Int(val["gender"] as! String)
+                let user = User(snapshot: child)
                 
                 //location
                 let lat = val["latitude"] as! CLLocationDegrees
@@ -172,7 +169,10 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
                             
                             if self.mapView.myLocation != nil {
                             
-                                let marker = GMSMarker(position: self.mapView.myLocation.coordinate)
+                                //1.3034249, 103.7928852
+                                let dummyLocation = CLLocationCoordinate2DMake(1.3034249, 103.7928852)
+                                
+                                let marker = GMSMarker(position: dummyLocation)
                                 marker.icon = resizedImage
                                 marker.appearAnimation = kGMSMarkerAnimationPop
                                 marker.title = "\(retUser.firstName) \(retUser.lastName)"

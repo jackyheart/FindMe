@@ -34,9 +34,6 @@ class FirebaseManager: NSObject {
                 //Get current logged in User
                 let currentUserRef = kFirebaseUserPath.childByAppendingPath(authData.uid)
                 
-                //Initialize User object
-                self.currentUser = User(ref: currentUserRef)
-            
                 //Observe event of current User
                 currentUserRef.observeSingleEventOfType(.Value, withBlock: { (snapshot) -> Void in
                     
@@ -49,10 +46,8 @@ class FirebaseManager: NSObject {
                         
                     } else {
                         
-                        //fetch data
-                        self.currentUser.firstName = snapshot.value["firstName"] as! String
-                        self.currentUser.lastName = snapshot.value["lastName"] as! String
-                        self.currentUser.gender = Int(snapshot.value["gender"] as! String)
+                        //Initialize User object
+                        self.currentUser = User(snapshot: snapshot)
                         
                         if let encodedImageString = snapshot.value["encodedImageString"]! {
                             
@@ -67,15 +62,15 @@ class FirebaseManager: NSObject {
                             self.currentUser.profileImage = image
                         }
                     }
+                    
+                    //return function
+                    callback(isAuthenticated)
                 })
             }
             else {
             
                 print("User not authenticated\n")
             }
-            
-            //return function
-            callback(isAuthenticated)
             
         }//end block
     }//end func

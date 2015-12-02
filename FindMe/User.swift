@@ -14,15 +14,12 @@ import GoogleMaps
 class User: NSObject {
     
     var ref:Firebase! = nil
-    var profileImage:UIImage!
-    
     var firstName:String! = ""
     var lastName:String! = ""
-    var location:CLLocationCoordinate2D!
     var gender:Int! = 1
-    
-    //Google Map
-    var marker:GMSMarker! = nil
+    var profileImage:UIImage!
+    var location:CLLocationCoordinate2D!
+    var marker:GMSMarker! = nil //Google Map
     
     /*
     firstName = Jacky;
@@ -34,10 +31,12 @@ class User: NSObject {
     displayName = "Jacky Coolheart";
     encodedImageString = "xxx"
     */
-    
-    init(ref:Firebase) {
-        super.init()
         
-        self.ref = ref
+    init(snapshot:FDataSnapshot) {
+    
+        self.ref = snapshot.ref
+        self.firstName = snapshot.value["firstName"] as! String
+        self.lastName = snapshot.value["lastName"] as! String
+        self.gender = Int(snapshot.value["gender"] as! String)
     }
 }
