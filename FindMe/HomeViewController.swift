@@ -26,7 +26,7 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
     var placePicker:GMSPlacePicker!
     
     //user array
-    var userArray:[User] = []
+    var otherUserArray:[User] = []
     
     //User
     var currentUser:User! = nil
@@ -59,6 +59,7 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
             self.currentUser = FirebaseManager.sharedInstance.currentUser
         })
         
+        //Observe single change on current User
         currentUserRef.observeSingleEventOfType(.Value, withBlock: { (snapshot) -> Void in
             
             //Right profile icon
@@ -79,114 +80,126 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
             self.tabBarController?.navigationItem.title = "\(self.currentUser.firstName) \(self.currentUser.lastName)"
         })
         
-        
-        currentUserRef.observeEventType(.ChildChanged, withBlock: { (snapshot) -> Void in
-            
-            print("(HomeVC) ChildChanged, snapshot:\(snapshot)")
-        })
-        
         /*
-        //Observe change on all Users (global)
         kFirebaseUserPath.observeEventType(.ChildChanged, withBlock: { (snapshot) -> Void in
-        
-            //print("(HomeVC snapshot global .ChildChanged): \(snapshot)")
-            
-            print("(global) snapshot children count: \(snapshot.childrenCount)") // I got the expected number of items
-            print("(global) snapshot children value: \(snapshot.value)") // I got the expected number of items
-            print("(global) display name: \(snapshot.value["displayName"])")
-            
-            
-            //Right profile icon
-            if self.currentUser.profileImage != nil {
-            
-                let profileImgView = UIImageView(frame: CGRectMake(100.0, 50.0, 40.0, 40.0))
-                profileImgView.image = self.currentUser.profileImage
-                Util.circleView(profileImgView)
-                
-                //right button item
-                if self.tabBarController?.navigationItem.rightBarButtonItem == nil {
-                    let barItem = UIBarButtonItem(customView: profileImgView)
-                    self.tabBarController?.navigationItem.rightBarButtonItem = barItem
-                }
-            }
-            
-            //navigation title
-            self.tabBarController?.navigationItem.title = "\(self.currentUser.firstName) \(self.currentUser.lastName)"
 
+            let userID = snapshot.value["id"] as! String
             
-            /*
-            for rest in snapshot.children.allObjects as! [FDataSnapshot] {
+            if self.currentUser.id != userID {
+            
+                print("(global) ChildChanged, snapshot:\(snapshot)")
+                print("(global) ChildChanged, snapshot.value:\(snapshot.value)")
+            }
+        })
+        */
+        
+        //Get all users (single event)
+        kFirebaseUserPath.observeSingleEventOfType(.Value, withBlock: { (snapshot) -> Void in
+            
+            for child in snapshot.children.allObjects as! [FDataSnapshot] {
+            
+                let val = child.value
                 
-                //print(rest.value)
+                let userID = val["id"] as! String
                 
-                let val = rest.value
+                if self.currentUser.id == userID {
+                    //ignore current User
+                    continue
+                }
+
+                //Add other Users to array
+                let user = User(userID: userID)
+                user.userPathRef = kFirebaseUserPath.childByAppendingPath(userID)
+                user.firstName = val["firstName"] as! String
+                user.lastName = val["lastName"] as! String
+                user.gender = Int(val["gender"] as! String)
                 
-                print("rest: \(rest)")
+                //location
+                let lat = val["latitude"] as! CLLocationDegrees
+                let lng = val["longitude"] as! CLLocationDegrees
+                user.location = CLLocationCoordinate2D(latitude: lat, longitude: lng)
                 
-                let searchUserArray = self.userArray.filter() { $0.id == val["id"] as? String }
+                //profile image
+                if let encodedImageString = val["encodedImageString"]! {
+                    
+                    print("(other user) encodedImageString not nil !\n")
+                    
+                    //Get profile image
+                    let encodedImageString = encodedImageString as! String
+                    let imageData = NSData(base64EncodedString: encodedImageString, options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)!
+                    
+                    //save reference to the profile image
+                    let image = UIImage(data: imageData)!
+                    user.profileImage = image
+                    
+                    //test
+                    /*
+                    let imageView = UIImageView(image: image)
+                    imageView.frame = CGRectMake(0, 0, 100, 100)
+                    imageView.center = self.view.center
+                    self.view.addSubview(imageView)
+                    */
+                }
                 
-                if searchUserArray.count > 0
-                {
-                    let foundUser = searchUserArray[0]
+                //add to array
+                self.otherUserArray.append(user)
+            }
+        })
+
+        //Observe change on all Users (global)
+        kFirebaseUserPath.observeEventType(.Value, withBlock: { (snapshot) -> Void in
+        
+            var i:Int = 0
+            for child in snapshot.children.allObjects as! [FDataSnapshot] {
+                
+                print("child: \(i)")
+                print("displayName: \(child.value["displayName"])")
+                print("id: \(child.value["id"])")
+                print("lat: \(child.value["latitude"])")
+                print("long: \(child.value["longitude"])")
+                print("\n")
+                
+                let val = child.value
+                let userID = val["id"] as! String
+
+                if self.currentUser.id == userID {
+                    //ignore current User
+                    continue
+                }
+                
+                let searchUserArray = self.otherUserArray.filter() { $0.id == userID }
+                
+                if searchUserArray.count == 1 {
+                    
+                    //User exist (exactly one match !), update marker
+                    
+                    let retUser = searchUserArray.first!
+                    
+                    if retUser.profileImage != nil {
                         
-                    if foundUser.marker == nil {
+                        let profileImage = retUser.profileImage
+                        let radius = profileImage.size.width * 0.5
+                        let resizedImage = Util.resizeImageWithImage(profileImage, scaledToSize: CGSize(width: radius, height: radius))
                         
-                        //let location = CLLocationCoordinate2DMake(<#T##latitude: CLLocationDegrees##CLLocationDegrees#>, <#T##longitude: CLLocationDegrees##CLLocationDegrees#>)
-                        let marker = GMSMarker(position: self.mapView.myLocation.coordinate)
-                        marker.icon = UIImage(named: "profile")
-                        marker.appearAnimation = kGMSMarkerAnimationPop
-                        marker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
-                        marker.title = "\(self.currentUser.firstName) \(self.currentUser.lastName)"
-                        marker.snippet = "Me"
-                        marker.map = self.mapView
-                        foundUser.marker = marker
+                        if retUser.marker == nil {
+                            
+                            if self.mapView.myLocation != nil {
+                            
+                                let marker = GMSMarker(position: self.mapView.myLocation.coordinate)
+                                marker.icon = resizedImage
+                                marker.appearAnimation = kGMSMarkerAnimationPop
+                                marker.title = "\(retUser.firstName) \(retUser.lastName)"
+                                marker.snippet = "\(retUser.location)"
+                                marker.map = self.mapView
+                                retUser.marker = marker
+                            }
+                        }
                     }
                 }
-            }
-            */
-        })
-        */
-
-        /*
-        //observe change on current user
-        let currentUserRef = FirebaseManager.sharedInstance.currentUser.userPathRef
-        currentUserRef.observeEventType(.Value, withBlock: { (snapshot) -> Void in
-            
-            //Get current User
-            self.currentUser = FirebaseManager.sharedInstance.currentUser
-            
-            //navigation title
-            self.tabBarController?.navigationItem.title = "\(self.currentUser.firstName) \(self.currentUser.lastName)"
-            
-            if let encodedImageString = snapshot.value["encodedImageString"]! {
                 
-                print("(HomeVC) encodedImageString not nil !\n")
-                
-                //Get profile image
-                let encodedImageString = encodedImageString as! String
-                let imageData = NSData(base64EncodedString: encodedImageString, options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)!
-                
-                //save reference to the profile image
-                let image = UIImage(data: imageData)!
-                self.currentUser.profileImage = image
-                
-                let profileImgView = UIImageView(frame: CGRectMake(100.0, 50.0, 40.0, 40.0))
-                profileImgView.image = self.currentUser.profileImage
-                Util.circleView(profileImgView)
-                
-                //right button item
-                if self.tabBarController?.navigationItem.rightBarButtonItem == nil {
-                    let barItem = UIBarButtonItem(customView: profileImgView)
-                    self.tabBarController?.navigationItem.rightBarButtonItem = barItem
-                }
+                i++
             }
         })
-        
-        currentUserRef.observeEventType(.ChildChanged, withBlock: { (snapshot) -> Void in
-            
-            print("(HomeVC) userRef .ChildChanged snapshot:\n\(snapshot)\n")
-        })
-        */
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -362,23 +375,6 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
         
         self.myLocationMarker.title = place.name
         self.myLocationMarker.snippet = place.formattedAddress
-        
-        /*
-        if let currentUser = PFUser.currentUser() {
-            
-            //profile picture
-            let profileImageString = currentUser["profileImage"] as! String
-            let imageData = NSData(base64EncodedString: profileImageString, options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)!
-            let image = UIImage(data: imageData)!
-            
-            let radius = image.size.width * 0.5
-            let resizedImage = Util.resizeImageWithImage(image, scaledToSize: CGSize(width: radius, height: radius))
-            self.myLocationMarker.icon = resizedImage
-            
-            //title
-            self.myLocationMarker.title = currentUser["name"] as! String
-        }
-        */
     }
     
     //MARK: - Geocoding
