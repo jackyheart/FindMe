@@ -31,6 +31,9 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
     //User
     var currentUser:User! = nil
     
+    //status
+    var firstShowLocation:Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -51,14 +54,10 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
         self.mapView.settings.compassButton = true
         self.mapView.addObserver(self, forKeyPath: "myLocation", options: NSKeyValueObservingOptions.New, context: nil)
         
-        //Observe change on current User
-        let currentUserRef = FirebaseManager.sharedInstance.currentUser.userPathRef
-        currentUserRef.observeEventType(.Value, withBlock: { (snapshot) -> Void in
-            
-            //Get current User (keep updating for the latest version !)
-            self.currentUser = FirebaseManager.sharedInstance.currentUser
-        })
-        
+        //TODO: is this needed ?
+        self.currentUser = FirebaseManager.sharedInstance.currentUser
+        let currentUserRef = self.currentUser.ref
+
         //Observe single change on current User
         currentUserRef.observeSingleEventOfType(.Value, withBlock: { (snapshot) -> Void in
             
@@ -100,16 +99,13 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
             
                 let val = child.value
                 
-                let userID = val["id"] as! String
-                
-                if self.currentUser.id == userID {
+                if self.currentUser.ref.key == child.ref.key {
                     //ignore current User
                     continue
                 }
 
                 //Add other Users to array
-                let user = User(userID: userID)
-                user.userPathRef = kFirebaseUserPath.childByAppendingPath(userID)
+                let user = User(ref: child.ref)
                 user.firstName = val["firstName"] as! String
                 user.lastName = val["lastName"] as! String
                 user.gender = Int(val["gender"] as! String)
@@ -131,14 +127,6 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
                     //save reference to the profile image
                     let image = UIImage(data: imageData)!
                     user.profileImage = image
-                    
-                    //test
-                    /*
-                    let imageView = UIImageView(image: image)
-                    imageView.frame = CGRectMake(0, 0, 100, 100)
-                    imageView.center = self.view.center
-                    self.view.addSubview(imageView)
-                    */
                 }
                 
                 //add to array
@@ -159,15 +147,14 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
                 print("long: \(child.value["longitude"])")
                 print("\n")
                 
-                let val = child.value
-                let userID = val["id"] as! String
-
-                if self.currentUser.id == userID {
+                //let val = child.value
+            
+                if self.currentUser.ref.key == child.ref.key {
                     //ignore current User
                     continue
                 }
                 
-                let searchUserArray = self.otherUserArray.filter() { $0.id == userID }
+                let searchUserArray = self.otherUserArray.filter() { $0.ref.key == child.ref.key }
                 
                 if searchUserArray.count == 1 {
                     
@@ -204,6 +191,11 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if self.mapView.myLocation != nil {
+            let cameraPosition = GMSCameraPosition(target: self.mapView.myLocation.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
+            self.mapView.animateToCameraPosition(cameraPosition)
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -298,8 +290,17 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
         
         //print("\nmyLocation: \(mapView.myLocation.coordinate)\n")
         
+        if !firstShowLocation {
+        
+            firstShowLocation = true
+            
+            let cameraPosition = GMSCameraPosition(target: self.mapView.myLocation.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
+            self.mapView.animateToCameraPosition(cameraPosition)
+        }
+        
+        
         //User ref
-        let currentUserRef = FirebaseManager.sharedInstance.currentUser.userPathRef
+        let currentUserRef = FirebaseManager.sharedInstance.currentUser.ref
         
         //Save coordinate
         let coordinate = ["latitude":self.mapView.myLocation.coordinate.latitude, "longitude":self.mapView.myLocation.coordinate.longitude]
@@ -314,7 +315,7 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
         })
     
         //Update marker
-        if self.currentUser != nil {
+        if self.currentUser != nil && self.currentUser.profileImage != nil {
             
             let profileImage = self.currentUser.profileImage
             let radius = profileImage.size.width * 0.5

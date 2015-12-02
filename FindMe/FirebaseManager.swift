@@ -35,9 +35,8 @@ class FirebaseManager: NSObject {
                 let currentUserRef = kFirebaseUserPath.childByAppendingPath(authData.uid)
                 
                 //Initialize User object
-                self.currentUser = User(userID: authData.uid)
-                self.currentUser.userPathRef = currentUserRef
-                
+                self.currentUser = User(ref: currentUserRef)
+            
                 //Observe event of current User
                 currentUserRef.observeSingleEventOfType(.Value, withBlock: { (snapshot) -> Void in
                     
@@ -69,14 +68,6 @@ class FirebaseManager: NSObject {
                         }
                     }
                 })
-                
-                /*
-                //observe change
-                currentUserRef.observeEventType(.ChildChanged, withBlock: { (snapshot) -> Void in
-                    
-                    print("userRef .ChildChanged snapshot:\n\(snapshot)\n")
-                })
-                */
             }
             else {
             

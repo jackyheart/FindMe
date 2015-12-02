@@ -12,10 +12,8 @@ import CoreLocation
 import GoogleMaps
 
 class User: NSObject {
-
-    //static let sharedInstance = User() //singleton
-    var id:String!
-    var userPathRef:Firebase!
+    
+    var ref:Firebase! = nil
     var profileImage:UIImage!
     
     var firstName:String! = ""
@@ -37,9 +35,9 @@ class User: NSObject {
     encodedImageString = "xxx"
     */
     
-    init(userID:String) {
+    init(ref:Firebase) {
         super.init()
         
-        self.id = userID
+        self.ref = ref
     }
 }
