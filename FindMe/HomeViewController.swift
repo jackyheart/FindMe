@@ -322,6 +322,33 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
             let profileImage = self.currentUser.profileImage
             let radius = profileImage.size.width * 0.5
             let resizedImage = Util.resizeImageWithImage(profileImage, scaledToSize: CGSize(width: radius, height: radius))
+            
+            /*
+            //UIView to UIImage
+            UIGraphicsBeginImageContext(self.view.bounds.size);
+            self.view.layer.renderInContext(UIGraphicsGetCurrentContext())
+            var screenShot = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+            
+            
+            + (UIImage *) imageWithView:(UIView *)view
+            {
+                UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.opaque, 0.0);
+                [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+                UIImage * img = UIGraphicsGetImageFromCurrentImageContext();
+                UIGraphicsEndImageContext();
+                return img;
+            }
+            
+            + (UIImage *) imageWithView:(UIView *)view
+            {
+                UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.opaque, 0.0f);
+                [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:NO];
+                UIImage * snapshotImage = UIGraphicsGetImageFromCurrentImageContext();
+                UIGraphicsEndImageContext();
+                return snapshotImage;
+            }
+            */
 
             if self.currentUser.marker == nil {
             

@@ -23,11 +23,7 @@ class ViewController: UIViewController {
         FirebaseManager.sharedInstance.listenForAuthEvent { (authenticated) -> Void in
             
             if authenticated {
-                
-                //Get current User
-                //let currentUser = FirebaseManager.sharedInstance.currentUser
-                //let currentUserRef:Firebase = kFirebaseUserPath.childByAppendingPath(currentUser.id)
-                
+                                
                 //Segue
                 self.performSegueWithIdentifier("SegueMain", sender: self)
             }
