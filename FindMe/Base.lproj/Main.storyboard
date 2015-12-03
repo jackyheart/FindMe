@@ -66,7 +66,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <tabBarItem key="tabBarItem" title="Friends" id="QGv-Lu-CjO"/>
+                    <tabBarItem key="tabBarItem" title="Friends" image="icon_friends" id="QGv-Lu-CjO"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CkA-Rw-mDU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -208,7 +208,7 @@
                         </variation>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <tabBarItem key="tabBarItem" title="Settings" id="nm2-Le-Esu"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="icon_settings" id="nm2-Le-Esu"/>
                     <connections>
                         <outlet property="profileImgBtn" destination="Kgb-ek-PfB" id="M7R-vF-Mdo"/>
                         <outlet property="usernameTF" destination="k9r-rN-SE0" id="4wu-Dx-2Ek"/>
@@ -278,7 +278,7 @@
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <tabBarItem key="tabBarItem" title="Home" id="ZPE-YJ-M50"/>
+                    <tabBarItem key="tabBarItem" title="Home" image="icon_home" id="ZPE-YJ-M50"/>
                     <connections>
                         <outlet property="mapView" destination="NWB-BJ-CMe" id="7sp-gw-eKU"/>
                     </connections>
@@ -327,4 +327,9 @@
             <point key="canvasLocation" x="222" y="225"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="icon_friends" width="24" height="24"/>
+        <image name="icon_home" width="24" height="24"/>
+        <image name="icon_settings" width="24" height="24"/>
+    </resources>
 </document>

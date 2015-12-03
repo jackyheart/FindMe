@@ -128,8 +128,23 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
 
     @IBAction func logout(sender: AnyObject) {
         
-        kFirebaseRef.unauth()
-        self.dismissViewControllerAnimated(true, completion: nil)
+        let alertController = UIAlertController(title: "Logout", message: "Do you want to logout ?", preferredStyle: .Alert)
+        
+        let yesAction = UIAlertAction(title: kTextYes, style: .Default) { (action) -> Void in
+            
+            kFirebaseRef.unauth()
+            
+            print("User logged out !")
+        }
+        
+        let noAction = UIAlertAction(title: kTextNo, style: .Default) { (action) -> Void in
+            
+        }
+        
+        alertController.addAction(yesAction)
+        alertController.addAction(noAction)
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
     
     //MARK: - UIImagePickerControllerDelegate
@@ -145,6 +160,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
         let image = info[UIImagePickerControllerOriginalImage] as! UIImage
         self.profileImgBtn.setImage(image, forState: .Normal)
         
+        /*
         //Save encoded image to Firebase
         let currentUserRef = FirebaseManager.sharedInstance.currentUser.ref
         let imageData = UIImagePNGRepresentation(image)!
@@ -158,6 +174,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate, UIImagePi
                 print("Image Data saved successfully to Firebase!\n")
             }
         })
+        */
         
         dismissViewControllerAnimated(true, completion: nil)
     }
