@@ -57,7 +57,7 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
         self.currentUser = FirebaseManager.sharedInstance.currentUser
         let currentUserRef = self.currentUser.ref
         
-        //Observe single change on current User
+        //Read current User (single)
         currentUserRef.observeSingleEventOfType(.Value, withBlock: { (snapshot) -> Void in
             
             //Right profile icon
@@ -91,7 +91,7 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
         })
         */
         
-        //Get all users (single event)
+        //Get all users / Global (single)
         kFirebaseUserPath.observeSingleEventOfType(.Value, withBlock: { (snapshot) -> Void in
             
             for child in snapshot.children.allObjects as! [FDataSnapshot] {
@@ -131,7 +131,7 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
             }
         })
 
-        //Observe change on all Users (global)
+        //Observe change on all Users / Global (repeat)
         kFirebaseUserPath.observeEventType(.Value, withBlock: { (snapshot) -> Void in
         
             var i:Int = 0
@@ -156,7 +156,6 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
                 if searchUserArray.count == 1 {
                     
                     //User exist (exactly one match !), update marker
-                    
                     let retUser = searchUserArray.first!
                     
                     if retUser.profileImage != nil {
@@ -249,8 +248,11 @@ class HomeViewController: UIViewController, GMSMapViewDelegate, CLLocationManage
         
         print("didTapMyLocationButtonForMapView")
         
-        let cameraPosition = GMSCameraPosition(target: self.mapView.myLocation.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
-        self.mapView.animateToCameraPosition(cameraPosition)
+        if self.mapView.myLocation != nil {
+        
+            let cameraPosition = GMSCameraPosition(target: self.mapView.myLocation.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
+            self.mapView.animateToCameraPosition(cameraPosition)
+        }
         
         return true
     }

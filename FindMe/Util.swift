@@ -58,6 +58,14 @@ class Util: NSObject {
         return resizedImage
     }
     
+    class func testImageOnView(view: UIView, image: UIImage) {
+    
+        let imageView = UIImageView(image: image)
+        imageView.frame = CGRectMake(0, 0, 100, 100)
+        imageView.center = view.center
+        view.addSubview(imageView)
+    }
+    
     /*
     + (UIImage *) imageWithView:(UIView *)view
     {
